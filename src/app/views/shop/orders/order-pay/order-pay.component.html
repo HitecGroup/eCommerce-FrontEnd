@@ -1,0 +1,118 @@
+<div fxLayout="column" class="w-100 hitec-bg">
+
+  <div  fxLayoutAlign="start center" fxLayoutGap="5px">
+    <a style="color:var(--color-blue)" routerLink="/shop/cart">Carrito de compra</a>
+    <mat-icon style="color:var(--color-red)">chevron_right</mat-icon>
+    <span>Resumen de compra</span>
+  </div>
+
+  <div fxLayoutAlign="end center">
+    <div class="advert" fxLayoutAlign="center center" fxLayoutGap="5px">
+      <mat-icon>info</mat-icon>
+      <span class="text-muted" [ngStyle]="layoutConf.isMobile ? {} : {'line-height':'0'}">Tasa de Cambio Actual: {{dollar}} - Servicio de HiTec</span>
+    </div>
+  </div>
+
+  <div fxLayout="column" fxLayoutAlign="center start" class="w-100">
+    <span class="f-1-2rem">ID SC: {{shoppingCarId}}</span>
+    <span *ngIf="discountCodeKey?.length > 0" class="f-1-2rem">CÓDIGO DE DESCUENTO: {{discountCodeKey}}</span>
+  </div>
+
+  <div fxLayoutAlign="start center" fxLayoutGap="10px" class="w-100 mb-16 hitec-menu">
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" class="h-100 p-0-10 bg-white">
+      <span *ngIf="!layoutConf.isMobile">¿Deseas facturar?</span>
+      <mat-checkbox (change)="onChange($event)">La facturación se realizará en dólares</mat-checkbox>
+    </div>
+  </div>
+
+  <div *ngIf="cart?.length" class="mb-16" [@animate]="{value:'*',params:{delay: '100ms', x:'50px'}}">
+    <mat-card class="p-0 m-0">
+      <mat-card-content class="p-0">
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="width:100%;">
+
+          <ng-container matColumnDef="article">
+            <th mat-header-cell *matHeaderCellDef> Artículo </th>
+            <td mat-cell *matCellDef="let element"> {{element.skuSapNavigation.itemName}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef> N° de piezas </th>
+            <td mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Costo por pieza </th>
+            <td mat-cell *matCellDef="let element"> $ USD {{element.priceStr}} </td>
+          </ng-container>
+        
+          <ng-container matColumnDef="total">
+            <th mat-header-cell *matHeaderCellDef> Total </th>
+            <td mat-cell *matCellDef="let element"> $ USD {{element.totalStr}} </td>
+          </ng-container>
+        
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!cart?.length" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+    <mat-card class="text-center">
+      <h5 class="mb-16">Tu carrito está vacío</h5>
+      <button class="btn-black" style="width:180px" routerLink="/shop">Volver a la tienda</button>
+    </mat-card>
+  </div>
+    
+  <p  id="titleCompra">Información de Compra</p>
+  <!-- -->
+  <form method="post" action="{{URL_BBVA}}" #form>
+
+    <div  class="divForm">
+      
+        <!-- -->
+        <input matInput name="mp_account" value="{{mpAccount}}" readonly class="cdk-visually-hidden">
+
+        <input matInput  name="mp_order" value="{{order}}" readonly class="cdk-visually-hidden">
+        
+        <input matInput  name="mp_reference" value="{{reference}}" readonly class="cdk-visually-hidden" >
+        
+        <input matInput name="mp_product" value="1" class="cdk-visually-hidden">
+
+        <input matInput name="mp_node" value="0" class="cdk-visually-hidden">
+
+        <input matInput name="mp_concept" value="1" class="cdk-visually-hidden">
+
+        <input matInput name="mp_amount" value="{{price}}" readonly class="cdk-visually-hidden">
+
+        <input matInput name="mp_currency" value="1" readonly class="cdk-visually-hidden" >
+
+        <input matInput name="mp_signature" value="{{hmacDigest}}" readonly class="cdk-visually-hidden">
+        <!--  -->
+        <input matInput name="mp_urlsuccess" value="{{URL_BBVA_SUCCESS}}" class="cdk-visually-hidden">
+        <input matInput name="mp_urlfailure" value="{{URL_BBVA_FAILED}}" class="cdk-visually-hidden">
+        
+        <mat-card class="resume">
+          <div class="mat-table">
+            <h2>Revisa tu pedido</h2>
+            <div class="mat-header-row">
+              <div class="mat-header-cell">
+                  <b>Dirección de envio</b>
+                  <a mat-button class="btnCambiarDireccion" (click)="openRegister();">Cambiar</a>
+              </div>
+              <div class="mat-header-cell"><b>Enviar a</b></div>
+              <div class="mat-header-cell"><b>Total a pagar</b></div>
+            </div>
+            <div class="mat-row" style="padding-top: 30px; padding-bottom: 30px;">
+              <div class="mat-cell" style="padding-right: 40px;">{{address}}</div>
+              <div class="mat-cell">{{infoUser?.name}}</div>
+              <div class="mat-cell">$ {{price}} MXN</div>
+            </div>
+          </div>
+
+        </mat-card>
+
+        <button style="margin-top: 30px;" class="btnComprar" mat-flat-button type="button" (click)="submitForm()" ondblclick="return">CONFIRMAR COMPRA</button>
+    </div>
+  </form>
+</div>

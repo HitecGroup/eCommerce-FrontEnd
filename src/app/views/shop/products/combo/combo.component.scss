@@ -1,0 +1,19 @@
+.product-card{
+    height:520px;
+}
+.card-img-container{
+    height: 330px !important;
+}
+.card-image-combo {
+    max-height: 100%;
+    border-radius: 8px;
+    background-color: #FFF;
+    background-color: var(--color-bg-white);
+    cursor: pointer;
+    margin: 0 !important;
+    -o-object-fit: cover;
+    object-fit: cover;
+}
+:host ::ng-deep .mat-card-image {
+    width: auto;
+}

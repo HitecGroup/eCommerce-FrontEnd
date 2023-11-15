@@ -1,0 +1,174 @@
+
+#header_profile{display:none;overflow:hidden;margin: 0 !important;}
+/* header-topnav{min-height: 80px;} */
+.headerComponents{padding:0 20px;}
+.max-header-w{max-width: 500px!important;}
+@media (max-width: 600px) {
+    ::ng-deep mat-button-wrapper,.headerComponents {
+        font-size: 1rem !important;
+    }
+    .iconSearch {
+        display: none;
+    }
+    .search {
+        padding-left: 1%;
+        height: 40px;
+        position: relative;
+        left: -13px;
+    }
+    .iconSearch {
+        left: 5px;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.iconSearch {
+    left: 5%;
+    position: relative;
+    z-index: 1;
+}
+.search {
+    padding-left: 35px;
+    height: 40px;
+    position: relative;
+    left: -13px;
+}
+
+.menuCategories {
+    background: var(--color-red);
+    color: var((--color-white));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width:45%;
+    border-radius: 0;
+    width: 250px;
+}
+.menuCategoriesOptions {
+    color: var(--color-black);
+}
+.address{
+    color: var(--color-black);
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 100%;
+}
+
+.headerBlack{
+    background-color: var(--color-black);
+    color: var(--color-white) !important;
+    height: auto !important;
+
+}
+
+/*** To change the arrow color ****/
+.mat-form-field.mat-focused .mat-form-field-ripple{
+    background-color: blue;
+}
+.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: blue;
+}    
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: blue;
+}
+
+
+
+
+.mat-select-arrow-wrapper{
+    opacity: 1;
+    color: var(--color-white);
+}
+
+.not-empty-select.mat-selected {
+    color: var(--color-black) !important;
+}
+
+.not-empty-select.mat-selected {
+    color: var(--color-black) !important;
+}
+  
+.mat-select-value-text {
+    color: var(--color-success-dark) !important;
+}
+
+.mat-select-white .mat-select-value{
+    color: var(--color-white) !important;
+}
+
+.mat-select-panel-wrap{
+    position: relative;
+    top: 50px;
+}
+
+.mat-select-panel-wrap .mat-select-panel{
+    min-width: calc(100% + 26px) !important;
+    /*transform: translateX(0px) !important*/
+}
+
+.mat-form-field-wrapper{
+    padding-bottom: 0.7em;
+}
+
+.header-icon{
+    font-size: 30px!important;
+    width: 1em!important;
+    height: 1em!important;
+    color: #dd2c34!important;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.buttons-header-session{
+    color: #000000; 
+    font-size: 0.8rem; 
+    text-align: left;
+}
+
+.label-session{
+    color: #464748; 
+    font-weight: 300; 
+    font-size: 0.8rem;
+    margin: 0px !important;
+}
+
+.app-logo{max-height:100px;height:100%;width:auto;cursor: pointer;}
+
+.contact-box{border:1px solid black;border-radius: 5px;}
+
+.circle {
+    cursor:pointer;
+    background: var(--color-error-light);
+    width: 50px!important;
+    height: 50px!important;
+    min-width: 50px!important;
+    border-radius: 50%;
+    display: -webkit-flex;
+    align-items: center;
+}
+
+.label-circle{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    color: white;
+}
+
+.circle-mobile {
+    background: var(--color-error-light);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: -webkit-flex;
+    align-items: center;
+}
+
+.label-circle-mobile{
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    color: white;
+}

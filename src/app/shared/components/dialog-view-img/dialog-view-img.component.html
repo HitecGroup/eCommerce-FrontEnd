@@ -1,0 +1,12 @@
+<h2 mat-dialog-title class="color-white">Visualizar Imagen:</h2>
+<mat-dialog-content 
+	style="background-color: white !important;padding-top: 1em;padding-bottom: 1em;min-height: 430px;">
+	<div fxFlex fxLayout="column" fxLayoutAlign="center center">
+		<img id="preview" style="border-radius: 10px;box-shadow: lightgray 4px 4px 4px 4px;display:none;" alt="image at full size">
+        <span *ngIf="!img">No hay imagen disponible</span>
+	</div>
+</mat-dialog-content>
+<mat-dialog-actions align="center">
+	<!--<button mat-button mat-dialog-close>Cancelar</button>-->
+	<button mat-flat-button [mat-dialog-close]="true" cdkFocusInitial class="btn-success">Cerrar</button>
+</mat-dialog-actions>

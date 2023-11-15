@@ -1,0 +1,29 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+    <span *ngIf="!confirm" class="text-blue" style="font-size: 16px;">Mensaje del sistema:</span>
+    <span *ngIf="confirm" class="text-blue" style="font-size: 16px;">Confirmación:</span>
+    <button mat-icon-button (click)="dismiss()"  >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+  <hr class="color-light-gray"/>
+  <mat-dialog-content style="margin-top: 30px; margin-bottom: 30px;">
+    <span style="font-size: 20px;">{{message}}</span>
+  </mat-dialog-content>
+  <hr class="color-light-gray"/>
+  <mat-dialog-actions align="end" *ngIf="confirm">
+    <button class="btn-blue" mat-button [mat-dialog-close]="false">
+      <mat-label class="m-1">Cancelar</mat-label>
+      <mat-icon aria-hidden="false">cancel</mat-icon>
+    </button>
+    <button class="btn-orange" mat-button [mat-dialog-close]="true">
+      <mat-label class="m-1">Confirmar</mat-label>
+      <mat-icon aria-hidden="false">check_circle</mat-icon>
+    </button>
+  </mat-dialog-actions>
+  <mat-dialog-actions align="center" *ngIf="!confirm">
+    <button class="btn-blue" mat-button [mat-dialog-close]="true">
+      <mat-label class="m-1">Aceptar</mat-label>
+      <mat-icon aria-hidden="false">check_circle</mat-icon>
+    </button>
+  </mat-dialog-actions>
+  

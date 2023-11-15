@@ -1,0 +1,214 @@
+<div 
+  fxFlex="100" 
+  fxLayout="column"
+  fxLayoutAlign="start center"
+  fxLayoutGap="16px"
+  class="body-content p-15-0"
+  >
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px" class="w-100 max-width" style="position:relative;">
+    <div fxLayoutAlign="center center" class="banner-container" [ngStyle.xs]="{'height':'170px'}">
+      <button mat-mini-fab color="light" (click)="previousBanner()" class="banner-button-left">
+        <mat-icon style="color:var(--color-red)">chevron_left</mat-icon>
+      </button>
+      <div fxFill fxLayoutAlign="center center" class="banner" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+        <img *ngFor="let b of banners" [id]="b.banner" [ngStyle.xs]="{'object-fit':'unset','height':'150px'}" class="banner-img" [src]="b.resourceUrl" alt="No hay imagen disponible" [@fadeInOut]="b.state" (click)="goTo(b)">
+        <!-- <mat-label *ngIf="b.state=='1' && !b.resourceUrl" class="card-no-image"><b>No hay imagen disponible</b></mat-label> -->
+      </div>
+      <button mat-mini-fab color="light" (click)="nextBanner()" class="banner-button-right">
+        <mat-icon style="color:var(--color-red)">chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px" class="w-100 p-50-0 max-width">
+    <div fxLayoutAlign="center center">
+      <mat-label class="section-title">Nuestras Marcas</mat-label>
+    </div>
+    <div fxLayoutAlign="center center" class="w-100" style="height: 180px;">
+      <div fxFlex="5" fxLayoutAlign="center center">
+        <button [ngStyle]="layoutConf.isMobile ? {'display':'none'} : {}" mat-mini-fab color="light" (click)="scrollLeft(_trademark)">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div #_trademark fxFlex="90" fxLayoutGap="5px" class="trademark-container">
+        <div 
+          fxFlex="200px" 
+          fxLayoutAlign="center center" 
+          *ngFor="let t of trademarks"
+          (click)="getTrademarkElements(t)"
+          class="trademark">
+          <img *ngIf="t.imageUrl != ''" [src]="t.imageUrl">
+          <mat-label *ngIf="!t.imageUrl">{{t.trademark}}</mat-label>
+        </div>
+      </div>
+      <div fxFlex="5" fxLayoutAlign="center center">
+        <button [ngStyle]="layoutConf.isMobile ? {'display':'none'} : {}" mat-mini-fab color="light" (click)="scrollRight(_trademark)">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px" class="w-100 p-20-0 max-width hitec-bg">
+    <div fxLayoutAlign="center center">
+      <mat-label class="section-title">Categorías principales</mat-label>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="center start" class="cards-container" style="overflow:auto">
+      <div *ngFor="let c of categories.slice(0,8)" class="category-card-container">
+        <mat-card class="category-card" fxLayoutAlign="center center"
+          (click)="getCategoryElements(c)">
+          <div class="card-img-container" fxLayoutAlign="center center">
+            <img *ngIf="c.imageUrl !== ''" mat-card-image [src]="c.imageUrl" alt="No hay imagen disponible" class="card-image">
+            <mat-label *ngIf="!c.imageUrl" class="card-no-image"><b>No hay imagen disponible</b></mat-label>
+          </div>
+        </mat-card>
+        <div class="w-100" fxLayoutAlign="center center" class="category-card-chip">
+          <span fxLayoutAlign="center center" class="white-chip">
+            <span class="category-label">{{c.title}}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div fxLayoutAlign="center center" class="w-100">
+      <button class="btn-gradient-red" (click)="setCategoriesNull()" [routerLink]="['/shop/categories']">
+        Ver todas</button>
+    </div>
+  </div>
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px" class="w-100 p-10-0 max-width">
+    <div fxLayoutAlign="center center">
+      <mat-label class="section-title">Productos destacados</mat-label>
+    </div>
+    <div fxLayoutAlign="center center" class="w-100" style="position:relative;">
+      <div fxFlex class="featured-product-left" [routerLink]="['/shop/products/featured',featuredProducts[0]?.id]">
+        <img [src]="featuredProducts[0]?.imageUrl" class="featured-img">
+        <div fxLayout="column" fxLayoutGap="10px" class="featured-label-left">
+          <!-- <div fxFlex="50" fxLayoutAlign="center center" >
+            <img class="hover" [src]="featuredProducts[0]?.brandUrl">
+          </div>
+          <span *ngIf="!layoutConf.isMobile" fxFlex="50" fxLayoutAlign="center center" class="white-chip">
+            <b>{{featuredProducts[0]?.label}}</b>
+          </span> -->
+        </div>
+      </div>
+      <div fxFlex class="featured-product-center" [routerLink]="['/shop/products/featured',featuredProducts[1]?.id]">
+        <img [src]="featuredProducts[1]?.imageUrl" class="featured-img">
+        <div fxLayout="column" fxLayoutGap="5px" class="featured-label-center">
+          <!-- <div fxFlex="50" fxLayoutAlign="center center">
+            <img class="hover" [src]="featuredProducts[1]?.brandUrl">
+          </div>
+          <span *ngIf="!layoutConf.isMobile" fxFlex="50" fxLayoutAlign="center center" class="white-chip">
+            <b>{{featuredProducts[1]?.label}}</b>
+          </span> -->
+        </div>
+      </div>
+      <div fxFlex class="featured-product-right" [routerLink]="['/shop/products/featured',featuredProducts[2]?.id]">
+        <img [src]="featuredProducts[2]?.imageUrl" class="featured-img">
+        <div fxLayout="column" fxLayoutGap="10px" class="featured-label-right">
+          <!-- <div fxFlex="50" fxLayoutAlign="center center">
+            <img class="hover" [src]="featuredProducts[2]?.brandUrl">
+          </div>
+          <span *ngIf="!layoutConf.isMobile" fxFlex="50" fxLayoutAlign="center center" class="white-chip">
+            <b>{{featuredProducts[2]?.label}}</b>
+          </span> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px" class="w-100 p-10-0 max-width">
+    <div fxLayoutAlign="center center">
+      <mat-label class="section-title">Lo más vendido</mat-label>
+    </div>
+    
+    <div fxLayout="row wrap" fxLayoutAlign="center center" class="cards-container">
+      <mat-card fxLayout="column"
+        *ngFor="let bs of bestSellers | paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: totalRows }; let i = index;"
+        [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+        class="product-card">
+        <div fxFlex="50" class="card-img-container w-100 mb-16" fxLayoutAlign="center center" [routerLink]="['/shop/products', bs.skuSap]">
+          <img mat-card-image *ngIf="bs.imageUrl" class="card-image" [src]="bs.imageUrl" (error)="service.onImgError($event, bs?.trademarkId)"  alt="No hay imagen disponible" style="max-width: 80%;">
+          <mat-label *ngIf="!bs.imageUrl" class="card-no-image"><b>No hay imagen disponible</b></mat-label>
+        </div>
+        <mat-card-title fxLayoutAlign="space-between center">
+          <b fxFlex="60" fxLayoutAlign="start center" class="product-name">{{bs?.itemName ? bs?.itemName : "--"}}</b>
+          <b fxFlex="40" fxLayoutAlign="end center" class="product-price">
+            {{bs?.salePrice * dollar|currency:'MXN':'symbol':'.2-2':'es_MX' }} mxn 
+            <br>
+            {{bs?.salePrice|currency:'MXN':'symbol':'.2-2':'es_MX'}} dlls
+          </b>
+        </mat-card-title>
+        <mat-card-content>
+          <div fxFlex="100" fxLayout="column">
+            <!-- <mat-label>{{bs.iso}}</mat-label> -->
+            <mat-label class="itext-red">{{bs.trademark?.trademark ? bs.trademark?.trademark : "-"}}</mat-label>
+            <mat-label class="text-muted">{{bs?.skuSap ? bs?.skuSap : "-"}}</mat-label>
+            <div fxFlex="100" fxLayout="column" fxLayoutAlign="space-between center">
+              <div fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="center start" class="mb-16 w-100 product-properties" >
+                <div fxLayout="column" fxLayoutAlign="center center"
+                  *ngFor="let pr of getPropertiesByRecords(bs.relProductsProperties); let i = index;">
+                  <div *ngIf="showProperty(pr)" fxLayout="column" fxLayoutAlign="center center" style="width:80px">
+                    <mat-label [matTooltip]="pr.property" class="property-name"><b>{{pr.property.length > 25 ? pr.property.substring(0,25)+' ...' : pr.property}}</b></mat-label>
+                    <mat-label [matTooltip]="pr.value" fxLayoutAlign="center center" class="property-value"><span>{{pr.value.length > 10 ? pr.value.substring(0,10)+' ...' : pr.value}}</span></mat-label>
+                  </div>
+                </div>
+                <div *ngIf="!bs.relProductsProperties"><b>No hay propiedades relacionadas</b></div>
+              </div>
+              <div fxLayout="row" fxLayoutAlign="center center" class="mt-3" (click)="addToCart(bs)">
+                <button class="btn-gradient-red"><mat-icon>add_shopping_cart</mat-icon> Agregar al carrito </button>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+      <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center">
+        <div fxFlex="100" *ngIf="bestSellers.length <= 0">
+          <mat-label>No hay más productos para mostrar</mat-label>
+        </div>
+        <div fxFlex="100">
+          <pagination-controls (pageChange)="changePage($event)" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px" class="w-100 p-10-0 max-width">
+    <div fxFill>
+    <a>
+      <img [src]="promo" (click)="searchByProduct();"></a>
+    </div>
+  </div>
+  <div fxLayoutAlign="center center" fxLayout="column" fxLayoutGap="16px" class="w-100 p-10-0 max-width">
+    <div>
+      <mat-label class="section-title">Descarga nuestro catálogo</mat-label>
+    </div>
+    <div fxLayout="row wrap" fxFlex="row" fxLayoutAlign="center center">
+      <div fxFlex="5" fxLayoutAlign="center center">
+        <button [ngStyle]="layoutConf.isMobile ? {'display':'none'} : {}" mat-mini-fab color="light" (click)="scrollLeft(_catalogue)">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+      <div fxFlex="90" fxLayoutGap="5px">
+        <div #_catalogue class="catalogue-container">
+          <div *ngFor="let c of catalogue" class="catalogue-card-container">
+            <mat-card class="catalogue-card">
+              <div style="width:100%;cursor:pointer" fxLayoutAlign="center center">
+                <img mat-card-image [src]="c.imageUrl" alt="catalogue" style="margin-top:0">
+              </div>
+              <mat-card-content >
+                <div fxFill fxLayoutAlign="center center" class="mb-16">
+                  <img [src]="c.logoUrl">
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <div class="w-100" fxLayoutAlign="center center" class="catalogue-card-chip">
+              <button class="btn-gradient-red" (click)="goToLinkCatalogue(c.fileUrl)">
+                Descargar catálogo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div fxFlex="5" fxLayoutAlign="center center">
+        <button [ngStyle]="layoutConf.isMobile ? {'display':'none'} : {}" mat-mini-fab color="light" (click)="scrollRight(_catalogue)">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

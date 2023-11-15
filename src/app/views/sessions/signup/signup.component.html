@@ -1,0 +1,106 @@
+<div class="general-container" [style]=" layoutConf.isMobile ? 'margin-top: 2em;' : 'margin-top: 8em;'" >
+  <!-- Login -->
+  <div class="general-controls">
+    <!-- Titles -->
+
+    <!-- Form divider -->
+    <div class="form-divider" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" >
+      <!-- Login -->
+      <div fxFlex="30" fxLayoutAlign="center center" class="form-style">
+        <form class="form-StyleHeight" fxLayoutAlign="center space-around" fxFlex="100" fxFlex.xs="100" fxLayout="column" [formGroup]="signupForm" (ngSubmit)="signup()">
+          <div class="marginBottom-5">
+            <h1> Reg&iacute;strate </h1>
+          </div>
+
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>work</mat-icon>
+              <mat-label>Régimen fiscal</mat-label>
+              <mat-select matInput formControlName="taxRegimeId">
+                <mat-option *ngFor="let r of regimenFiscal;" [value]="r?.id">{{r?.taxRegime}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.taxRegimeId">
+              <ng-container
+                *ngIf="signupForm.controls['taxRegimeId'].hasError(error.type) && (signupForm.controls['taxRegimeId'].dirty || signupForm.controls['taxRegimeId'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>insert_drive_file</mat-icon>
+              <mat-label> RFC con homoclave * </mat-label>
+              <input matInput [formControl]="signupForm.controls['rfc']" value="">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.rfc">
+              <ng-container
+                *ngIf="signupForm.controls['rfc'].hasError(error.type) && (signupForm.controls['rfc'].dirty || signupForm.controls['rfc'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>email</mat-icon>
+              <mat-label> Dirección de correo electrónico * </mat-label>
+              <input matInput [formControl]="signupForm.controls['email']" value="">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.email">
+              <ng-container
+                *ngIf="signupForm.controls['email'].hasError(error.type) && (signupForm.controls['email'].dirty || signupForm.controls['email'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </div>
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>lock</mat-icon>
+              <mat-label> Contraseña * </mat-label>
+              <input [type]="showPass == false ? 'password'  : 'text' " matInput [formControl]="signupForm.controls['password']" value="">
+              <mat-icon style="cursor: pointer;" class="color-gray-light" matTooltip="Mostrar / Ocultar contraseña" (click)="showPass = !showPass" matSuffix >{{ !showPass ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.password">
+              <ng-container
+                *ngIf="signupForm.controls['password'].hasError(error.type) && (signupForm.controls['password'].dirty || signupForm.controls['password'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </div>
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy"> 
+              <mat-icon class="color-gray-light mr-1" matPrefix>lock</mat-icon>
+              <mat-label> Confirmar Contraseña * </mat-label>
+              <input [type]="showPassConfirm == false ? 'password'  : 'text' " matInput [formControl]="signupForm.controls['confirmPassword']" value="" [errorStateMatcher]="matcher">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.confirmPassword">
+              <ng-container
+                *ngIf="signupForm.controls['confirmPassword'].hasError(error.type) && (signupForm.controls['confirmPassword'].dirty || signupForm.controls['confirmPassword'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+            <mat-error *ngIf="signupForm.hasError('notSame')">
+              Las contraseñas no coinciden
+            </mat-error> 
+          </div>
+          <div fxLayout="column" fxLayoutAlign="center" fxFlex="100" style="margin-top: 20px;margin-bottom: 20px;">
+            <div fxFlex="100" fxLayoutAlign="center center">
+              <button type="button" class="btn-gradient-red" fxFlex="100" fxFlex.xs="100" mat-flat-button type="submit" [disabled]="signupForm.invalid">
+                Registrarse
+              </button>
+            </div>
+          </div>
+          <div fxLayout="column" fxLayoutAlign="center" fxFlex="100">
+            <small>
+              <a [routerLink]="['/sessions/signin']" class="color-red">
+                ¿Ya tienes una cuenta? Inicia Sesión
+              </a>
+            </small>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

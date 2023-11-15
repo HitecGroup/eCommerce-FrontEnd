@@ -1,0 +1,71 @@
+.general-container {
+    margin: 50px;
+}
+
+.form-divider {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.form-style {
+    margin: 20px 0 20px 0;
+    height: 28em;
+}
+
+.register-form {
+    border-left: 1px solid #DBDBDB;
+}
+
+.info-divider {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.copy-footer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    border-top: 1px solid #DBDBDB;
+    padding-top: 20px;
+}
+
+/* Align objects */
+.center-obj{
+    display: grid;
+    justify-items: center;
+}
+
+.margen-top {
+    margin-top: 50px;
+}
+
+.txt-right {
+    text-align: right;
+}
+
+
+/* Colors */
+.txt-color {
+    color: #9A9A9A;
+}
+
+ul {
+    list-style: none;
+    text-align: left;
+}
+
+.redColor{
+    background-color: #f44336 !important;
+}
+
+.form-StyleHeight{
+    height: 100%;
+}
+
+.marginBottom-5{
+    margin-bottom: 5%;
+}
+
+.egret-navy .mat-form-field-appearance-fill .mat-form-field-flex{
+    background-color: none !important;
+}

@@ -1,0 +1,88 @@
+.banner,.banner-container{
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.banner-container{
+    height:270px;
+}
+.banner-img{
+    position: relative;top:0;left:0;
+    max-width: 1280px !important;
+    width: 100%;
+    height: auto;
+    transition: all .3s ease-in;
+    min-height: 150px;
+    height:270px;
+    object-fit: cover;
+}
+.banner-button-left,.banner-button-right{
+    background-color: rgba(255,255,255,0.8);
+    position: absolute;
+    z-index: 1;
+}
+.banner-button-left{left:10px;}
+.banner-button-right{right:10px;}
+
+
+.featured-product-left, .featured-product-center, .featured-product-right{
+    position: relative;
+}
+.featured-product-left{
+    margin-bottom: 60px;
+}
+.featured-product-left:hover,.featured-product-center:hover,.featured-product-right:hover{
+    cursor: pointer;
+    img.hover {
+        box-shadow: 5px 5px 5px rgba(200, 200, 200, 0.8) !important;
+    }
+    span {
+        box-shadow: 5px 5px 5px rgba(200, 200, 200, 0.8) !important;
+    }
+}
+.featured-product-center{
+    margin: 30px 0;
+}
+.featured-product-right{
+    margin-top: 60px;
+}
+.featured-img{position: relative;top:0;left:0}
+.featured-label-left,.featured-label-center,.featured-label-right{
+    position: absolute;
+    width:50%;
+    height:25%;
+}
+
+.featured-label-left{top:15%;left:4%;}
+.featured-label-center{top:67%;left:15%;}
+.featured-label-right{top:23%;left:48%;}
+
+.catalogue-container{
+    width: 100%;
+    display: flex;
+    overflow-x: scroll;
+    max-height: 350px;
+    position: relative;
+    max-width: 980px;
+    overflow-y: clip;
+}
+.catalogue-card-container{
+    width: 290px;
+    height: 380px;
+    z-index:0;
+    margin:4px;
+    box-sizing: border-box;
+}
+.catalogue-card{z-index:0;cursor: pointer;}
+.catalogue-card-chip{z-index:999;margin-top:-35px}
+@media only screen and (max-width: 600px) {
+    .catalogue-container{
+        width: 100%;
+        display: inline;
+        overflow-x: scroll;
+        max-height: 350px;
+        position: relative;
+        overflow-y: clip;
+    }
+}

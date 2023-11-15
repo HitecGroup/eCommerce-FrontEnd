@@ -1,0 +1,33 @@
+:root{
+  --color-dark:#2e2e2e;
+  --color-gray: #9A9A9A;
+  --color-light: #FFF;
+}
+/* You can add global styles to this file, and also import other style files */
+.pb-1,
+.py-1 {
+  padding-bottom: 0.25rem !important;
+}
+
+.grayColor{
+    color: var(--color-gray);
+}
+
+.bg-gray {
+  background-color: var(--color-gray) !important;
+}
+
+.form-btn:hover {
+  color: var(--color-dark) !important;
+  background-color: var(--color-light) !important;
+  border: solid 1px !important;
+  border-color: var(--color-dark) !important;
+}
+
+
+.form-btn{
+  background-color: var(--color-dark);
+  border: solid 1px var(--color-dark);
+  color: var(--color-light);
+  font-size: 1.1em;font-weight: 700;width: auto;
+}

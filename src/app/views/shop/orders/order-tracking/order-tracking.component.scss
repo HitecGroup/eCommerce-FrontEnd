@@ -1,0 +1,36 @@
+.status-image{
+	
+	background-position: center; /* Center the image */
+	background-repeat: no-repeat; /* Do not repeat the image */
+	margin-top: 0!important;
+	margin-bottom: 0!important;
+	width: auto;
+	height: auto;
+	max-height: 360px;
+	max-width: 50%;
+	background-size: contain;
+    margin-right: 10px;
+}
+
+.status-list{
+}
+
+.status-list p{
+    margin:0;
+    font-weight: bold;
+	white-space:nowrap;
+}
+
+.product-name{font-size: 1rem;}
+.product-card{
+    width:80%;min-height: 180px;max-height:360px;border-radius: 10px;
+}
+
+.card-img-container{
+    min-width:150px;width:150px;height:150px;
+}
+.product-image{
+    height: fit-content;
+	width: 45%;
+}
+

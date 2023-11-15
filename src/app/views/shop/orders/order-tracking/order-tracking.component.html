@@ -1,0 +1,50 @@
+<div fxLayout="column" fxLayoutAlign="center start" class="w-100 m-0-8 mb-16">
+    <button class="btn-transparent" fxLayoutAlign="center center" routerLink="/shop/orders">
+        <mat-icon>chevron_left</mat-icon>
+        <span>Regresar</span>
+    </button>
+    <span class="f-1-6rem p-1-12">Pedido creado el {{order?.createdAt|date:'longDate'}}</span>
+    <mat-divider class="w-100 mb-16"></mat-divider>
+    <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="w-100" >
+        <div fxFlex="60" fxFlex.lt.lg="100" fxLayout="row"  style="height:360px">
+            <div fxFlex="10" fxFill fxLayoutAlign="end center">
+                <img src="assets/images/orders/{{statusImage}}" mat-card-image class="status-image" >
+            </div>
+            <div fxFlex="90" fxLayout="column" fxLayoutAlign="center start" class="status-list">
+                <span *ngIf="statusImage !== 'estado5.png'" fxLayout="column" fxLayoutAlign="space-between start" style="height: 100%!important;">
+                    <p>Pedido realizado el {{getOrderDate()}}</p>
+                    <p>Enviado</p>
+                    <p>Llegando</p>
+                    <p>Entregado</p>
+                </span>
+                <span *ngIf="statusImage === 'estado5.png'" >
+                    <p>Pedido cancelado</p>
+                </span>
+            </div>
+        </div>
+        <div fxFlex="40" fxFlex.lt.lg="100" fxLayout="row"  style="height:360px">
+            <div fxFill fxLayout="column" fxLayoutAlign="start start" style="overflow-y:scroll">
+                <!-- <mat-card *ngFor="let item of order.products" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="product-card"> -->
+                <mat-card fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start center" fxLayoutGap="10px" class="product-card" [ngStyle.lt-lg]="{'height':'350px'}">
+                    <div fxFlex="50" class="card-img-container" fxLayoutAlign="center center" style="height: 100% !important;" [routerLink]="['/shop/products', order?.skuSapNavigation?.skuSap]">
+                        <!-- <img mat-card-image *ngIf="bs.imageUrl" class="card-image" [src]="bs.imageUrl"  alt="No hay imagen disponible" style="max-width: 80%;"> -->
+                        <img *ngIf="order?.skuSapNavigation?.imageUrl" class="card-image" [src]="order?.skuSapNavigation?.imageUrl" alt="No hay imagen disponible" (error)="onImgError($event, order?.skuSapNavigation?.trademarkId)">
+                        <mat-label *ngIf="!order?.skuSapNavigation?.imageUrl" class="card-no-image"><b>No hay imagen disponible</b></mat-label>
+                    </div>
+                    <div fxFlex="50" fxLayout="column">
+                        <mat-card-title fxLayoutAlign="space-between center">
+                            <b fxFlex="70" fxLayoutAlign="start center" class="product-name">{{order?.skuSapNavigation?.itemName}}</b>
+                        </mat-card-title>
+                        <mat-card-content >
+                        <div fxFlex="100" fxLayout="column">
+                            <mat-label class="itext-red">{{order?.skuSapNavigation?.trademark?.trademark ? order?.skuSapNavigation?.trademark?.trademark : "-"}}</mat-label>
+                            <mat-label class="text-muted">{{order?.skuSapNavigation?.skuSap}}</mat-label>
+                        </div>
+                        </mat-card-content>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+
+</div>

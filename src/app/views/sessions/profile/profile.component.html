@@ -1,0 +1,414 @@
+<div [ngClass]="{'wrapper-master-mobile':layoutConf.isMobile, 'wrapper-master':!layoutConf.isMobile}">
+  <div class="div-name">
+    <div fxLayout="column" fxLayoutAlign="start center" [ngClass]="{'column-mobile':layoutConf.isMobile, 'column':!layoutConf.isMobile}">
+      <div fxLayoutAlign="center center" [ngClass]="{'circle-mobile':layoutConf.isMobile, 'circle':!layoutConf.isMobile,'bg-transparent':profileImageUrl}">
+        <img id="profile" class="circle bg-transparent">
+        <div *ngIf="!profileImageUrl" [ngClass]="{'label-circle-mobile':layoutConf.isMobile, 'label-circle':!layoutConf.isMobile}">
+          <label>{{userNick}}</label>
+        </div>
+      </div>
+      <br>
+      <div class="label-title-name">
+        <label>{{userName?'':userName}}</label>
+      </div>
+      <div class="label-title-company">
+        <label>Empresa</label>
+      </div>
+      <br>
+      <!-- <div class="label-title-avatar">
+        <a>Actualizar Avatar</a>
+      </div> -->
+      <div fxLayout="column" fxLayoutAlign="center center" class="label-title-avatar">
+        <mat-label class="color-blue pointer" (click)="openFileSelector()" >Actualizar Avatar</mat-label><br/>
+        <input id="fileselector" type="file" #myInput (change)="onChange($event)"  accept="image/*" style="visibility: hidden;">
+      </div>
+
+      <!-- <div fxLayoutAlign="space-between center">
+        <button mat-button type="button" class="btn-blue" [disabled]="file == null" (click)="confirmImageDialog()">
+          <small>Subir imágen</small>
+          <mat-icon>upload</mat-icon>
+        </button>
+        <button mat-flat-button type="button" class="m-1 btn-blue" [matTooltip]="'Ver imágen principal de la nota'" (click)="openDialogViewImg()">
+          <mat-icon>image</mat-icon>
+        </button>
+      </div> -->
+
+      <!-- <div fxLayoutAlign="center center">
+        <img id="profile_preview">
+      </div> -->
+
+
+    </div>
+  </div>
+  <div [ngClass]="{'div-data-mobile':layoutConf.isMobile, 'div-data':!layoutConf.isMobile}">
+    <form [formGroup]="form" (ngSubmit)="submit();">
+
+      <hr class="bg-gray"/>
+      
+      <div [ngClass]="{'div-password-mobile':layoutConf.isMobile, 'div-password':!layoutConf.isMobile}" fxLayoutGap="5px">
+        <button [ngClass]="{'btn-password-mobile':layoutConf.isMobile, 'btn-password':!layoutConf.isMobile}" [routerLink]="['/sessions/update-password']">
+          <mat-icon>lock</mat-icon>
+          <span [ngStyle]="!layoutConf.isMobile ? {'margin-right':'18px'} : {}">Cambiar Contraseña</span>
+        </button>
+      </div>
+      <br>
+      <div class="title-label"><label>DATOS DE USUARIO</label></div>
+      <br>
+      <div [ngClass]="{'wrapper-mobile':layoutConf.isMobile, 'wrapper':!layoutConf.isMobile}">
+
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>person</mat-icon>
+            <mat-label> Nombre </mat-label>
+            <input matInput class="upperCase" formControlName="name" value="" maxlength="40" (input)="changeName()">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.name">
+              <ng-container *ngIf="name.hasError(error.type) && (name.dirty || name.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+        
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>person</mat-icon>
+            <mat-label> Apellido(s) </mat-label>
+            <input matInput class="upperCase" formControlName="lastName" value="" maxlength="40" (input)="changeName()">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.name">
+              <ng-container *ngIf="lastName.hasError(error.type) && (lastName.dirty || lastName.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+      
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>call</mat-icon>
+            <mat-label> Teléfono </mat-label>
+            <input matInput class="upperCase" formControlName="telephone" value="" maxlength="40">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.telephone">
+              <ng-container *ngIf="telephone.hasError(error.type) && (telephone.dirty || telephone.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+      
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>work</mat-icon>
+            <mat-label> Razón Social </mat-label>
+            <input matInput class="upperCase" formControlName="company" value="" maxlength="80">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.company">
+              <ng-container *ngIf="company.hasError(error.type) && (company.dirty || company.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+      
+      </div>
+      <br>
+      <hr class="bg-gray"/>
+      <br>
+      <div class="title-label"><label>DIRECCIÓN</label></div>
+
+      <div class="text-right">
+        <mat-label class="text-danger">
+          Misma dirección para Facturación
+        </mat-label>
+        <mat-select class="w-40" [(value)]="invoiceAddress" (selectionChange)="setInvoiceAddressControls()">
+          <mat-option [value]="false">Si</mat-option>
+          <mat-option [value]="true">No</mat-option>
+        </mat-select>
+      </div>
+      
+      <!--Dirección-->
+      <div [ngClass]="{'wrapper-mobile':layoutConf.isMobile, 'wrapper':!layoutConf.isMobile}">
+      
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>pin_drop</mat-icon>
+            <mat-label> Dirección </mat-label>
+            <input matInput class="upperCase" formControlName="address" value="" maxlength="60">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.address">
+              <ng-container *ngIf="address.hasError(error.type) && (address.dirty || address.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+        
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+            <mat-label> Tipo de asentamiento </mat-label>
+            <input matInput class="upperCase" formControlName="settlementType" value="" [disabled]="false">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.settlementType">
+              <ng-container *ngIf="settlementType.hasError(error.type) && (settlementType.dirty || settlementType.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>near_me</mat-icon>
+            <mat-label> Código Postal </mat-label>
+            <input matInput class="upperCase" formControlName="postalCode" (input)="searchPostalCode(1);" value="">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.postalCode">
+              <ng-container *ngIf="postalCode.hasError(error.type) && (postalCode.dirty || postalCode.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+        
+        <div *ngIf="dataIsManual" class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+            <mat-label> Asentamiento </mat-label>
+            <input matInput class="upperCase" formControlName="settlement" value="">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.settlement">
+              <ng-container *ngIf="settlement.hasError(error.type) && (settlement.dirty || settlement.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+        <div *ngIf="!dataIsManual" class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+              <mat-label>Asentamiento</mat-label>
+              <mat-select formControlName="settlement" class="upperCase" required>  
+                <mat-option class="upperCase" *ngFor="let s of settlements;" [value]="s">{{s}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.settlement">
+              <ng-container *ngIf="settlement.hasError(error.type) && (settlement.dirty || settlement.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+            <mat-label> Número Exterior </mat-label>
+            <input matInput class="upperCase" formControlName="exteriorNumber" value="" maxlength="10">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.exteriorNumber">
+              <ng-container *ngIf="exteriorNumber.hasError(error.type) && (exteriorNumber.dirty || exteriorNumber.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+      
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+            <mat-label> Estado </mat-label>
+            <mat-select class="upperCase" [disabled]="false" formControlName="state" required>
+              <mat-option class="upperCase" *ngFor="let st of arrayDataEstados" [value]="st.clave">{{st.descripcion}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.state">
+              <ng-container *ngIf="state.hasError(error.type) && (state.dirty || state.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>flag</mat-icon>
+            <mat-label> Pais </mat-label>
+            <input matInput class="upperCase" formControlName="country" value="" [disabled]="false">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.country">
+              <ng-container *ngIf="country.hasError(error.type) && (country.dirty || country.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+      
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+            <mat-label> Municipio </mat-label>
+            <input matInput class="upperCase" formControlName="municipality" value="" [disabled]="false">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.municipality">
+              <ng-container *ngIf="municipality.hasError(error.type) && (municipality.dirty || municipality.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+
+        <div class="pb-1 marginBottom-5">
+          <mat-form-field class="full-width" appearance="legacy">
+            <mat-icon class="color-gray-light mr-1" matPrefix>apartment</mat-icon>
+            <mat-label> Ciudad </mat-label>
+            <input matInput class="upperCase" formControlName="city" value="" [disabled]="false" maxlength="40">
+          </mat-form-field>
+          <div *ngFor="let error of errorMessages.city">
+              <ng-container *ngIf="city.hasError(error.type) && (city.dirty || city.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+        </div>
+
+      </div>
+
+      <ng-container *ngIf="invoiceAddress == true; then showInvoiceAddress"></ng-container>
+      <ng-template #showInvoiceAddress>
+      <br>
+      <hr class="bg-gray"/>
+      <br>
+      <div class="title-label"><label>DIRECCIÓN DE FACTURACIÓN</label></div>
+        <div [ngClass]="{'wrapper-mobile':layoutConf.isMobile, 'wrapper':!layoutConf.isMobile}">
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>pin_drop</mat-icon>
+              <mat-label> Dirección </mat-label>
+              <input matInput class="upperCase" formControlName="_address" value="" maxlength="60">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._address">
+                <ng-container *ngIf="_address.hasError(error.type) && (_address.dirty || _address.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>near_me</mat-icon>
+              <mat-label> Código Postal </mat-label>
+              <input matInput class="upperCase" formControlName="_postalCode" (input)="searchPostalCode(2);" value="">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._postalCode">
+                <ng-container *ngIf="_postalCode.hasError(error.type) && (_postalCode.dirty || _postalCode.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div> 
+          
+          <div *ngIf="dataIsManual" class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+              <mat-label> Asentamiento </mat-label>
+              <input matInput class="upperCase" formControlName="_settlement" value="">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._settlement">
+                <ng-container *ngIf="_settlement.hasError(error.type) && (_settlement.dirty || _settlement.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+          <div *ngIf="!dataIsManual" class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+              <mat-label>Asentamiento</mat-label>
+              <mat-select formControlName="_settlement" class="upperCase">
+                  <mat-option class="upperCase" *ngFor="let s of _settlements;" [value]="s">{{s}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._settlement">
+              <ng-container *ngIf="_settlement.hasError(error.type) && (_settlement.dirty || _settlement.touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </div>
+
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+              <mat-label> Tipo de asentamiento </mat-label>
+              <input matInput class="upperCase" formControlName="_settlementType" value="" [disabled]="false">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._settlementType">
+                <ng-container *ngIf="_settlementType.hasError(error.type) && (_settlementType.dirty || _settlementType.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+        
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>flag</mat-icon>
+              <mat-label> Pais </mat-label>
+              <input matInput class="upperCase" formControlName="_country" value="" [disabled]="false">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.country">
+                <ng-container *ngIf="country.hasError(error.type) && (country.dirty || country.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+        
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+              <mat-label> Estado </mat-label>
+              <mat-select  class="upperCase" [disabled]="false" formControlName="_state">
+                <mat-option class="upperCase" *ngFor="let st of arrayDataEstados" [value]="st.clave">{{st.descripcion}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._state">
+                <ng-container *ngIf="_state.hasError(error.type) && (_state.dirty || _state.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+        
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>apartment</mat-icon>
+              <mat-label> Ciudad </mat-label>
+              <input matInput class="upperCase" formControlName="_city" value="" [disabled]="false" maxlength="40">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._city">
+                <ng-container *ngIf="_city.hasError(error.type) && (_city.dirty || _city.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+        
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+              <mat-label> Municipio </mat-label>
+              <input matInput class="upperCase" formControlName="_municipality" value="" [disabled]="false">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._municipality">
+                <ng-container *ngIf="_municipality.hasError(error.type) && (_municipality.dirty || _municipality.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+        
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>home</mat-icon>
+              <mat-label> Número Exterior </mat-label>
+              <input matInput class="upperCase" formControlName="_exteriorNumber" value="" maxlength="10">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages._exteriorNumber">
+                <ng-container *ngIf="_exteriorNumber.hasError(error.type) && (_exteriorNumber.dirty || _exteriorNumber.touched)">
+                  <small class="form-error-msg">{{error.message}}</small>
+                </ng-container>
+              </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <div class="submit-button">
+        <button [ngClass]="{'btn-gradient-red-mobile':layoutConf.isMobile, 'btn-gradient-red':!layoutConf.isMobile}" type="submit" [disabled]="form.invalid">
+          Actualizar Datos
+        </button>
+      </div>  
+    </form>    
+  </div>
+</div>

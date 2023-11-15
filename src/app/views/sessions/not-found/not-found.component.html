@@ -1,0 +1,17 @@
+<div 
+  style="border: 1px solid green;"
+  fxFlex="100">
+  <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center">
+    <div fxFlex="50" fxLayoutAlign="center start" fxLayout="column">
+      <h1>Error 404</h1>
+      <p>
+        Esta página no existe o esta deshabilitada
+      </p>
+      <button mat-flat-button class="btn-gradient-red" [routerLink]="['/']">Regresar al Home</button>
+    </div>
+    
+  </div>
+  <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+    <img src="assets/images/404.png" width="380" height="380">
+  </div>
+</div>

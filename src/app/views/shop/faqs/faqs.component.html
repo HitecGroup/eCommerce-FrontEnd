@@ -1,0 +1,25 @@
+<div 
+  style="padding-top: 2em;margin-bottom: 4em;"  
+  fxFlex="100"
+  fxLayout="row"
+  fxLayoutAlign="center center"
+  >
+  <div fxFlex="80" fxLayoutAlign="center start" fxLayout="column" fxLayoutGap="1%">
+    <div fxFlex="100" fxLayout="column" fxLayoutAlign="center center">
+      <h2>Preguntas frecuentes</h2>
+      <p style="text-align: justify;">En esta sección encontrarás las respuestas acerca de nuestros servicios y productos</p>
+    </div>
+    <div fxFlex="100" fxLayout="column" fxLayoutGap="1%">
+      <mat-expansion-panel style="border: 1px solid black;" fxFlex="100" *ngFor="let faq of faqs">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <b>{{faq.faq}}</b>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div style="height: 20vh;padding-left: 15px;" [ngStyle.xs]="{'height':'50vh'}" [innerHTML]="faq.innerHTML"></div>
+      </mat-expansion-panel>
+    </div>
+    
+    
+  </div>
+</div>

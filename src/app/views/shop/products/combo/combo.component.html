@@ -1,0 +1,73 @@
+<div fxLayout="column" fxLayoutAlign="start center" class="w-100 hitec-bg">
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100 p-10">
+        <span><b>{{banner?.banner}}</b></span>
+        <button *ngIf="products.length" class="btn-gradient-red" (click)="addToCart()"><mat-icon>add_shopping_cart</mat-icon> Agregar al carrito </button>
+    </div>
+    <div class="category-lc p-25-0 mt-25 w-100 p-10">
+  
+        <!--products-->
+        <div 
+          *ngIf="products.length" 
+          fxFlex="90"
+          fxLayout="column"
+          fxLayoutGap="2%">
+  
+          <div 
+          fxFlex="100"
+          fxLayout="row" fxLayout.lt-lg="column" fxLayout.xs="column" fxLayout.sm="row" fxLayout.md="row"
+          fxLayoutAlign="start center"
+          fxLayoutGap="1%"
+          class="product-l"
+          *ngFor="let p of products; let i = index;"
+          [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+          >
+            <!--imagen del producto-->
+            <div fxFlex="20"  fxFlex.xs="50" class="card-img-container" fxLayout="column" fxLayoutAlign="center center" [routerLink]="['/shop/products', p.skuSap]">
+              <img mat-card-image style="height: 100%; max-height: 100%; border-radius: 8px; background-color: var(--color-bg-white); cursor: pointer; margin: 0 !important; object-fit: cover;" [src]="p.imageUrl" alt="No hay imagen disponible" (error)="service.onImgError($event, p?.trademarkId)">
+              <!-- <mat-label *ngIf="!p.imageUrl" class="card-no-image"><b>No hay imagen disponible</b></mat-label> -->
+            </div>
+            <!--detalles del producto-->
+            <div fxFlex="25" fxFlex.xs="70" fxLayout="column" fxLayoutAlign="start start" class="text-left">
+              <div fxFlex [routerLink]="['/shop/products', p.skuSap]"><b>{{p.itemName}}</b></div>
+              <div fxFlex><b>{{p.skuSap}}</b></div>
+              <!-- <div fxFlex><b>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis amet dolores aspernatur laborum illum magnam praesentium impedit harum, commodi, sequi recusandae in laboriosam minus atque repudiandae. Ratione eaque nam recusandae!</b></div> -->
+              <div fxFlex>{{getProperty(p?.details,84) || getProperty(p?.details,118)}}</div>
+              <div fxFlex><span class="color-red"><b>{{p.trademark}}</b></span></div>
+              <div fxFlex>{{getProperty(p?.details,35)}}</div>
+              <!-- <div fxFlex class="text-muted">{{p.skuVendor}}</div> -->
+              <div fxFlex fxLayoutGap="10px"><b>{{p?.sale_price * dollar|currency:'MXN':'symbol':'.2-2':'es_MX' }} mxn / {{p?.sale_price|currency:'MXN':'symbol':'.2-2':'es_MX'}} dlls</b><span *ngIf="p?.discount" class="percent-chip"> {{ p.discount }} %</span></div>
+            </div>
+            <!--propiedades del producto-->
+            <div fxFlex="50" fxFlex.xs="25" fxLayout="row wrap" fxLayoutGap="15px" fxLayoutAlign="center start" class="mb-16 product-properties" [ngClass]="{'centered':!p?.details}">
+              <div fxLayout="column" fxLayoutAlign="center center"
+                *ngFor="let pr of getPropertiesByRecords(p?.details); let i = index;" style="width:150px">
+                <div fxLayout="column" fxLayoutAlign="center center" style="width:100%">
+                  <mat-label [matTooltip]="pr.property" class="property-name"><b>{{pr.property}}</b></mat-label>
+                  <mat-label [matTooltip]="pr.value" fxLayoutAlign="center center" class="property-value"><span>{{pr.value}}</span></mat-label>
+                </div>
+              </div>
+              <div *ngIf="!p?.details">No hay propiedades relacionadas</div>
+            </div>
+          </div>
+        </div>
+        <!---no-content-->
+        <div 
+          *ngIf="!products.length "
+          fxFlex="100"
+          fxLayout="column"
+          fxLayoutAlign="center center"
+          style="height:75vh;width:auto;">
+          <h1 *ngIf="(filterType == 1)">No hay productos para mostrar</h1>
+          <h1 *ngIf="(filterType == 2)">No hay productos para mostrar</h1>
+          <h1 *ngIf="(filterType == 3)">No hay productos para mostrar</h1>
+          <h1 *ngIf="(filterType == 4)">No hay productos para mostrar</h1>
+          <h1 *ngIf="(filterType == 5)">No hay productos para mostrar</h1>
+          <button 
+            class="btn-gradient-red mt-3" 
+            mat-flat-button
+            [routerLink]="[redirect]"
+            >Regresar a la página de inicio</button>
+        </div>
+        <!--/-->
+      </div>
+</div>

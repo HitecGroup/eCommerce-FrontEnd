@@ -1,0 +1,94 @@
+@media (max-width: 599px) {
+    ::ng-deep mat-button-wrapper,.headerComponents {
+        font-size: 1rem !important;
+    }
+    .iconSearch {
+        display: none;
+    }
+}
+@media (min-width: 600px) {
+    .iconSearch {
+        display: none;
+    }
+}
+
+.search {
+    padding-left: 20%;
+    height: 40px;
+    position: relative;
+    left: -13px;
+}
+
+.menuCategories {
+    background: #dd2c34;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width:45%;
+    border-radius: 0;
+    width: 250px;
+}
+.menuCategoriesOptions {
+    color: black;
+}
+.address{
+    color: #000000;
+    font-weight: 500;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+    text-align: left;
+    width: 100%;
+}
+
+.redColor{
+    color: #dd2c34
+}
+
+.headerBlack{
+    background-color: #000000;
+    color: #ffffff !important;
+    height: 4.4em !important;
+
+}
+
+.textWhiteColor{
+    color: #ffffff !important;
+}
+
+/*** To change the arrow color ****/
+.mat-select-arrow {
+    color: #dd2c34;
+}
+
+
+.mat-select-arrow-wrapper{
+    opacity: 0;
+}
+
+.not-empty-select.mat-selected {
+    color: #000000 !important;
+}
+
+.not-empty-select.mat-selected {
+    color: #000000 !important;
+}
+  
+.mat-select-value-text {
+    color: green !important;
+}
+
+.mat-select-white .mat-select-value{
+    color: #ffffff !important;
+ }
+
+ .mat-form-field-infix {
+    top: 0em !important;
+ }      
+ .mat-form-field-suffix {
+    top: 0.4em !important;
+ }
+
+ .heightBar{
+     height: 10em;
+ }

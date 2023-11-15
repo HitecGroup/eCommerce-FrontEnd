@@ -1,0 +1,206 @@
+<div class="header-topnav mat-elevation-z2"  fxFlex="100">
+  <div class="container" style="max-width: none !important;"  fxFlex="100">
+    <div fxLayout="column" fxFlex="100" >
+
+      <div
+        [ngStyle]="layoutConf.isMobile ? {'min-height': '80px'} : {}"
+        fxLayout="row" fxFlex="100" fxLayout.xs="column" fxLayoutAlign="space-between center" style="background-color: #ffffff;" >
+
+        <!-- Busqueda mobile -->
+        <div *ngIf="displayMobileSearch" fxLayout="row" fxLayoutAlign="start center" style="position:absolute;z-index:999;width:100%;height:100%;background-color:white">
+          <mat-icon fxFlex="5" class="material-icons-outlined iconSearch color-red" style="display:inline-block">search</mat-icon>
+          <input fxFlex="95" type="text" class="search" style="border:0" #input (input)="verifyAutocomplete(input,'relatedWords');" (keyup.enter)="searchByText(input);displayMobileSearch = false;" [formControl]="autocompleteInput" placeholder="Buscar" [matAutocomplete]="auto">
+          <button  mat-button matSuffix mat-icon-button aria-label="clear" (click)="resetInputAutocomplete();displayMobileSearch = false;">
+            <mat-icon>close</mat-icon>
+          </button>
+          <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+            <mat-option *ngFor="let a of filteredAutocomplete | async" [value]="a.title" (onSelectionChange)="onAutocomplete(a,$event);displayMobileSearch = false;" >
+              <span>{{a.title}}</span>
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <!-- Busqueda mobile -->
+
+        <div [fxFlex]="layoutConf.isMobile ? 0 : 50" fxFill fxHide.xs>
+          <img src="assets/images/logoHitec.png" alt="" class="app-logo" (click)="resetMenuBar()" [routerLink]="['/shop']">
+        </div>
+        <div [fxFlex]="layoutConf.isMobile ? 100 : 50" fxFill fxFlex.xs="100" fxLayoutAlign="end center">
+          <!--no-logueado-->
+          <div *ngIf="!IsLogged" fxFlex="100" fxLayout="row" fxLayoutAlign="end center" fxLayoutAlign.xs="end center" class="max-header-w">
+            <div 
+              *ngIf="!layoutConf.isMobile" 
+              style="cursor: pointer;" 
+              fxFlex="auto" fxFlex.xs="30" fxFlex.sm="10" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+              <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon">call</mat-icon>
+              <mat-label mat-button class="f-1-2rem"><b>55 4125 9100</b></mat-label>
+            </div>
+            <div 
+              *ngIf="layoutConf.isMobile" 
+              style="cursor: pointer;" 
+              fxFlex="auto" fxFlex.lt-lg="35" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+              <img src="assets/images/logoHitec.png" alt="" class="app-logo" [routerLink]="['/shop']" style="max-width: 100px;width: 100px;">
+            </div>
+            <div 
+            *ngIf="layoutConf.isMobile"
+              style="cursor: pointer;" 
+              fxLayout="row" fxLayoutAlign="end center">
+              <button mat-flat-button style="padding:0;" (click)="displayMobileSearch = true;">
+                <mat-icon>search</mat-icon>
+              </button>
+            </div>
+            <div 
+              [routerLink]="['/sessions/signin']" 
+              style="cursor: pointer;" 
+              fxFlex="auto" fxFlex.lt-lg="10" fxLayout="row" fxLayoutAlign="center center" fxLayoutAlign.lt-lg="end center" fxLayoutGap="5px">
+              <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon">person</mat-icon>
+              <mat-label *ngIf="!layoutConf.isMobile" class="label-session" mat-button>Ingresar</mat-label>
+            </div>
+            <div 
+              [routerLink]="['/sessions/signup']" 
+              style="cursor: pointer;"
+              fxFlex="auto" fxFlex.xs="35" fxFlex.sm="35" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+              <mat-label class="label-session" mat-button>Crea tu cuenta</mat-label>
+              <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon">login</mat-icon>
+            </div>
+          </div>
+          <!--logueado-->
+          <div *ngIf="IsLogged" 
+            fxFlex="100" fxLayout="row" fxLayoutAlign="end center">
+            <!--configuración mobile-->
+            <div *ngIf="layoutConf.isMobile"
+              style="height: 100%;" 
+              fxFlex="100" fxLayout="row" fxLayoutAlign="space-betweenenter">
+              <div fxFlex="30" 
+                fxLayout="row" fxLayoutAlign="start center"
+                style="cursor: pointer;" 
+                >
+                <img src="assets/images/logoHitec.png" alt="" [routerLink]="['/shop']" style="max-width: 100px;width: 100px;">
+              </div>
+              <!---->
+              <div fxFlex="70"  
+                fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="2px"
+                >
+                <div fxFlex="25"
+                  fxLayoutAlign="center center">
+                  <button mat-flat-button (click)="displayMobileSearch = true;">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                </div>
+                <div fxFlex="25"
+                  fxLayoutAlign="center center">
+                  <button mat-icon-button [matBadge]="getItemCount" matBadgeColor="warn" matBadgeSize="small" matBadgePosition="after" [routerLink]="['/shop/cart']">
+                    <mat-icon class="material-icons-outlined">shopping_cart</mat-icon>
+                  </button>
+                </div>
+                <div fxFlex="25"
+                  fxLayoutAlign="center center">
+                  <div class="circle-mobile" (click)="goToProfile()" [ngClass]="{'bg-transparent':!showNick}">
+                    <img id="header_profile" [alt]="getProfileImageUrl" class="circle bg-transparent">
+                    <div class="label-circle-mobile">
+                      <label *ngIf="showNick">{{userNick}}</label>
+                    </div>
+                  </div>
+                </div>
+                <div 
+                  fxFlex="20" fxFlex.xs="30" fxFlex.sm="10" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center center">
+                  <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon" (click)="logout();">logout</mat-icon>
+                </div>
+              </div>
+            </div>
+            <!--Configuración web-->
+            <div 
+              *ngIf="!layoutConf.isMobile" 
+              style="cursor: pointer;" 
+              fxFlex="20" fxFlex.xs="30" fxFlex.sm="10" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+              <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon">call</mat-icon>
+              <mat-label mat-button class="f-1-2rem"><b>55 4125 9100</b></mat-label>
+            </div>
+            <div *ngIf="!layoutConf.isMobile"
+              fxFlex="60" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+              <div fxLayoutAlign="center center" class="circle" (click)="goToProfile()" [ngClass]="{'bg-transparent':!showNick}">
+                <img id="header_profile" [alt]="getProfileImageUrl" class="circle bg-transparent" >
+                <div class="label-circle">
+                  <!-- <label>{{userNick}}</label> -->
+                  <label *ngIf="showNick">{{userNick}}</label>
+                </div>
+              </div>
+              <div fxLayout="column" fxLayoutAlign="center start" class="h-100">
+                <button class="buttons-header-session p-0" mat-button [routerLink]="['/sessions/profile']"><b>{{userName}}</b></button>
+                <button fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px" class="bg-white contact-box" (click)="goToProfile()">
+                  <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon" style="font-size:24px">pin_drop</mat-icon>
+                  <div *ngIf="userInfo.accountAddresses?.length > 0"><span fxLayoutAlign="center center">Enviar a:&nbsp;<b>{{address}}</b></span></div>
+                  <div *ngIf="userInfo.accountAddresses?.length == 0"><span fxLayoutAlign="center center"><b>{{address}}</b></span></div>
+                </button>
+              </div>
+            </div>
+            <div *ngIf="!layoutConf.isMobile" 
+              fxFlex="20" fxFlex.xs="30" fxFlex.sm="10" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center center">
+              <button class="buttons-header-session" mat-button (click)="logout();" ><b>Cerrar sesión</b></button>
+              <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon">logout</mat-icon>
+            </div>
+
+          </div>
+        </div>
+        <!-- <div fxShow.xs style="height: 10px;"></div> -->
+      </div>
+      <!--configuración web-->
+      <div *ngIf="!layoutConf.isMobile" fxLayout="row" fxFlex="100" fxLayout.xs="column" fxLayoutAlign="start center" class="headerComponents headerBlack" fxLayoutGap="10px">
+        <div fxFlex.gt-lg="12" fxFlex.lg="16" fxFlex.lt-lg="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+          <mat-icon fxLayoutAlign="start center" class="material-icons-outlined color-red">build</mat-icon>
+          <mat-form-field floatLabel="never">
+            <mat-label class="text-white">Categorías</mat-label>
+            <mat-select 
+              class="mat-select-white mat-select-arrow-black" 
+              [(value)]="selectedCategory"
+              >
+              <!-- (selectionChange)="onAutocomplete($event.value)" -->
+              <mat-option class="not-empty-select" *ngFor="let c of categories" [value]="c" (click)="onAutocomplete(c)">
+                {{c.title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!---->
+        <div fxFlex.gt-lg="12" fxFlex.lg="16" fxFlex.lt-lg="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" >
+          <mat-icon fxLayoutAlign="start center" class="material-icons-outlined color-red">inventory_2</mat-icon>
+          <mat-form-field floatLabel="never">
+            <mat-label class="text-white">Marcas</mat-label>
+            <mat-select 
+              class="mat-select-white mat-select-arrow-black" 
+              [(value)]="selectedTrademark">
+              <mat-option class="not-empty-select" *ngFor="let t of trademarks" [value]="t" (click)="onAutocomplete(t)">
+                {{t.title}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!---->
+        <div fxFlex.gt-lg="12" fxFlex.lg="16" fxFlex.lt-lg="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" class="pointer">
+          <mat-icon fxLayoutAlign="start center" class="material-icons-outlined color-red">local_shipping</mat-icon>
+          <span [routerLink]="['/shop/orders']">Mis pedidos</span>
+        </div>
+        <!---->
+        <div fxFlex="64" fxFlex.md="40" fxLayout="row" fxLayoutAlign="end center">
+          <div fxFlex="45" fxFlex.md="60" fxLayout="row" fxLayoutAlign="start center">
+            <mat-icon fxFlex="5" class="material-icons-outlined iconSearch color-red">search</mat-icon>
+            <input fxFlex="95" type="text" class="search" #input (input)="verifyAutocomplete(input,'relatedWords');" (keyup.enter)="searchByText(input);" [formControl]="autocompleteInput" placeholder="Buscar" [matAutocomplete]="auto">
+            <button *ngIf="input.value != '' && input.value != undefined" mat-button matSuffix mat-icon-button aria-label="clear" (click)="resetInputAutocomplete();">
+              <mat-icon>close</mat-icon>
+            </button>
+            <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption>
+              <mat-option *ngFor="let a of filteredAutocomplete | async" [value]="a.title" (onSelectionChange)="onAutocomplete(a,$event)" >
+                <span>{{a.title}}</span>
+              </mat-option>
+            </mat-autocomplete>
+          </div>
+          <div fxFlex.md="20" fxFlex.xs="30" fxLayout="row" fxLayoutAlign="start center">
+            <button mat-icon-button [matBadge]="getItemCount" matBadgeColor="warn" matBadgeSize="small" matBadgePosition="after" [routerLink]="['/shop/cart']">
+              <mat-icon class="material-icons-outlined" style="font-size: 35px;">shopping_cart</mat-icon>
+            </button>
+          </div>
+        </div>
+        <!---->
+      </div>
+    </div>
+  </div>
+</div>

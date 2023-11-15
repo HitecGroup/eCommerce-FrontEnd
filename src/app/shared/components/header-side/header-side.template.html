@@ -1,0 +1,99 @@
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center" style="background-color: #ffffff;" class="headerComponents heightBar">
+	<img fxFlex fxHide.xs src="assets/images/logoHitec.png" alt="" class="app-logo" height="100px" [routerLink]="['/home/home']">
+	<span fxShow.xs style="height: 5px;"></span>
+	<div fxFlex="50" fxFlex.xs="100" fxLayout="column">
+
+	</div>
+	<div fxShow.xs style="height: 10px;"></div>
+	<div *ngIf="!IsLogged" fxFlex="40" fxFlex.xs="100" fxLayout="row" fxLayoutAlign="end start" fxLayoutAlign.xs="space-around center" >
+		<div fxFlex="25" fxFlex.xs="2" fxFlex.sm="5" fxFlexAlign.md="15" fxLayout="column" fxLayoutAlign="space-between center" style="text-align: left !important;">
+			
+		</div>
+		<div fxFlex="auto" fxFlex.xs="30" fxFlex.sm="10" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center space-between">
+      <mat-icon fxFlex="20" class="material-icons-outlined"  style="font-size: 30px;color: #dd2c34;">call</mat-icon>
+			<span style="color: #000000; font-weight: bolder; font-size: 1.2rem; text-align: left;">55 4125 9100</span>
+		</div>
+    <div fxFlex="auto" fxFlex.xs="30" fxFlex.sm="10" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center space-between">
+      <mat-icon fxFlex="20" class="material-icons-outlined"  style="font-size: 30px;color: #dd2c34;">person</mat-icon>
+			<button mat-button style="color: #464748; font-weight: 300; font-size: 0.8rem; text-align: left;" [routerLink]="['/sessions/signin']">Ingresar</button>
+		</div>
+    <div fxFlex="auto" fxFlex.xs="30" fxFlex.sm="10" fxFlexAlign.md="35" fxLayout="row" fxLayoutAlign="center space-between">
+      <button mat-button style="color: #464748; font-weight: 300; font-size: 0.8rem; text-align: left;" [routerLink]="['/sessions/signup']">Crea tu cuenta</button>
+      <mat-icon fxFlex="20" class="material-icons-outlined"  style="font-size: 30px;color: #dd2c34;">login</mat-icon>
+		</div>
+		<!-- <div fxFlex="50" fxFlex.xs="65" fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.xs="space-between center">
+		
+		</div> -->
+	</div>
+	<div *ngIf="IsLogged" fxFlex="40" fxFlex.xs="100" fxLayout="row" fxLayoutAlign="end center" fxLayoutAlign.xs="space-around center">
+		<div fxFlex.xs="2" fxFlex></div>
+		<div fxFlex="25" fxLayout="column" fxLayoutAlign="space-between center">
+			<span style="color: #767879; font-weight: 300; font-size: 0.8rem; text-align: left; width: 100%;">Enviar a {{infoUser?.name}}</span>
+			<span style="color: #000000; font-weight: 500; font-size: 0.8rem; text-align: left; width: 100%;" class="address">{{address || 'No hay dirección'}}</span>
+		</div>
+		<div fxFlex="20" fxFlex.xs="25" fxLayout="column" fxLayoutAlign="space-between center">
+			<span style="color: #767879; font-weight: 300; font-size: 0.8rem; text-align: left; width: 100%;">Llámanos</span>
+			<span style="color: #000000; font-weight: 500; font-size: 0.8rem; text-align: left; width: 100%;">55 4125 9100</span>
+		</div>
+		<div fxFlex="50" fxLayout="row" fxLayoutAlign="start center">
+			<button mat-button style="color: #464748; font-weight: 300; font-size: 0.8rem;" (click)="logout();" >Cerrar sesión</button>
+			<mat-icon aria-hidden="false" style="cursor: pointer !important; font-size: 40px; margin-left: 30px; height: 40px;" [matBadge]="badgeContent" matBadgeColor="warn" [routerLink]="['/cart']">shopping_cart</mat-icon>
+		</div>
+	</div>
+	<div fxShow.xs style="height: 10px;"></div>
+</div>
+<div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="space-around center" class="headerComponents headerBlack">
+  <div fxFlex="auto" fxFlex.xs="30" fxLayout="row" fxLayoutAlign="center center">
+    <mat-icon fxFlex="20" class="material-icons-outlined"  style="font-size: 24px;color: #dd2c34;">plumbing</mat-icon>
+    <mat-form-field appearance="filled" >
+      <!-- <mat-label class="textWhiteColor">Categorías</mat-label> -->
+      <mat-select class="mat-select-white" value="-1">
+        <mat-option class="not-empty-select" value="-1">
+          <span>Categorías</span>
+        </mat-option>
+        <mat-option class="not-empty-select" *ngFor="let cat of categories" [value]="cat.value">
+          {{cat.description}}
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <div fxFlex="auto" fxFlex.xs="30" fxLayout="row" fxLayoutAlign="center center">
+    <mat-icon fxFlex="20" class="material-icons-outlined"  style="font-size: 24px;color: #dd2c34;">inventory_2</mat-icon>
+    <mat-form-field appearance="filled" >
+      <mat-select class="mat-select-white" value="-1">
+        <mat-option class="not-empty-select" value="-1">
+          <span>Marca</span>
+        </mat-option>
+        <mat-option class="not-empty-select" *ngFor="let trade of trademarks" [value]="trade.value">
+          {{trade.description}}
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+    </mat-form-field>
+  </div>
+  <div fxFlex="auto" fxFlex.xs="30" fxLayout="row" fxLayoutAlign="center center">
+    <mat-icon fxFlex="20" class="material-icons-outlined"  style="font-size: 24px;color: #dd2c34;">local_shipping</mat-icon>
+    <button mat-button class="textWhiteColor" style="font-weight: 300; font-size: 0.875rem; text-align: left;">
+      Mis pedidos
+    </button>
+    <mat-icon matSuffix>keyboard_arrow_down</mat-icon>
+  </div>
+  <div fxFlex="15" fxFlex.xs="30" fxLayout="row" fxLayoutAlign="center center">
+  </div>
+  <div fxFlex="45" fxLayout="row" fxLayoutAlign="start center">
+    <mat-icon fxFlex="3" class="material-icons-outlined iconSearch" style="font-size: 22px;color: #dd2c34;" >search</mat-icon>
+    <input fxFlex="100" type="text" [value]="searchText" class="search" placeholder="Buscar" (keydown.enter)="search($event)">
+  </div>
+  
+  <div fxFlex="10" fxFlex.xs="30" fxLayout="row" fxLayoutAlign="center center">
+    <button mat-icon-button matBadge="4" matBadgeColor="warn" >
+      <mat-icon class="material-icons-outlined textWhiteColor" style="font-size: 25px;">shopping_cart</mat-icon>
+    </button>
+    
+  </div>
+
+</div>
+<!-- <mat-toolbar class="" style="height: 100px;">
+</mat-toolbar> -->

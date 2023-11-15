@@ -1,0 +1,12 @@
+<p mat-dialog-title align="center"><b style="font-weight: 1rem;">{{data.title}}</b></p>
+<div mat-dialog-content style="height: fit-content !important;">
+  <hr>
+  <h4>
+    <span [innerHTML]="data.content"></span>
+  </h4>
+  <hr>
+  <span style="color:gray;">{{data.at}}</span>
+</div>
+<div mat-dialog-actions align="center">
+  <button mat-button (click)="onNoClick()">Aceptar</button>
+</div>

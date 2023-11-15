@@ -1,0 +1,72 @@
+<footer class="main-footer">
+  <div *ngIf="!layoutConf.isMobile" fxLayout="row" class="container-dynamic d-flex" style="max-width: none !important; padding: 0 20px;">
+    <div fxFlex="2" fxFlex.md="3" fxFlex.xs="5" fxLayout="row" fxLayoutAlign="center space-between">
+      <mat-icon svgIcon="face-icon" ></mat-icon>
+		</div>
+    <div fxFlex="2" fxFlex.md="3" fxFlex.xs="5" fxLayout="row" fxLayoutAlign="center space-between">
+      <mat-icon svgIcon="instagram-icon" ></mat-icon>
+		</div>
+    <div fxFlex="2" fxFlex.md="3" fxFlex.xs="5" fxLayout="row" fxLayoutAlign="center space-between">
+      <mat-icon svgIcon="linkedin-icon" ></mat-icon>
+		</div>
+    <div fxFlex="15" fxFlex.xs="10" fxLayout="row" fxLayoutAlign="center space-between">
+      <div fxFlex="50" fxLayout="row" fxLayoutAlign="center center">
+        <button [routerLink]="['/shop/faqs']" mat-button>
+          <mat-icon class="text-red f-22 mr-1">help_outline</mat-icon>
+          <mat-label class="text-white f-22">FAQs</mat-label>
+        </button>
+      </div>
+		</div>
+
+    <span class="m-auto" ></span>
+    <div fxFlex="20" fxFlex.xs="45" fxFlex.sm="40" fxFlex.md="35" fxFill fxLayoutAlign="center space-between">
+      <button mat-button>
+        <mat-icon class="text-white f-22 mr-1">mail_outline</mat-icon>
+			  <span class="text-white f-22">ventas@hitectools.com</span>
+      </button>
+		</div>
+    <div fxFlex="15" fxFlex.sm="30" fxFlex.xs="20" fxFlex.md="25" fxFill fxLayoutAlign="center space-between">
+      <button mat-button>
+        <mat-icon class="text-white f-22 mr-1 material-icons-outlined">call</mat-icon>
+			  <span class="text-white f-22">55 4125 9100</span>
+      </button>
+		</div>
+  </div>
+  <!--configuración-mobile-->
+  <div *ngIf="layoutConf.isMobile" 
+    fxLayout="column" 
+    class="container-dynamic d-flex" style="max-width: none !important; padding: 0 20px;">
+    <!-- <div fxFlex="50" fxLayout="row" class="w-100">
+      <div fxFlex="50" fxLayoutAlign="center center" class="text-light">
+        <mat-icon class="material-icons-outlined m-1">mail</mat-icon>
+        <span>ventas@hitectools.com</span>
+      </div>
+      <div fxFlex="50" fxLayoutAlign="center center" class="text-light">
+        <mat-icon class="material-icons-outlined m-1">call</mat-icon>
+        <span>55&nbsp;4125&nbsp;91000</span>
+      </div>
+    </div> -->
+    
+    <div fxFlex="66" fxLayout="column" class="w-100">
+      <div fxFlex="50" fxLayoutAlign="center center" class="text-light">
+        <mat-icon class="material-icons-outlined m-1">mail</mat-icon>
+        <span>ventas@hitectools.com</span>
+      </div>
+      <div fxFlex="50" fxLayoutAlign="center center" class="text-light">
+        <mat-icon class="material-icons-outlined m-1">call</mat-icon>
+        <span>55&nbsp;4125&nbsp;91000</span>
+      </div>
+    </div>
+    <div fxFlex="34" fxLayoutAlign="center center" class="text-light" fxLayoutGap="1%">
+      <div fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon svgIcon="face-icon" ></mat-icon>
+      </div>
+      <div fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon svgIcon="instagram-icon" ></mat-icon>
+      </div>
+      <div fxFlex="30" fxLayout="row" fxLayoutAlign="center center">
+        <mat-icon svgIcon="linkedin-icon" ></mat-icon>
+      </div>
+		</div>
+  </div>
+</footer>

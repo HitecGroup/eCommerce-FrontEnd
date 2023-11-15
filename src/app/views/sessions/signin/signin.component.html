@@ -1,0 +1,89 @@
+<div class="general-container" style="margin-top: 8em;" >
+  <!-- Login -->
+  <div class="general-controls">
+    <!-- Titles -->
+
+    <!-- Form divider -->
+    <div class="form-divider" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" >
+      <!-- Login -->
+      <div fxFlex="30" fxLayoutAlign="center center" class="form-style">
+        <form class="form-StyleHeight" fxLayoutAlign="center space-around" fxFlex="100" fxFlex.xs="100" fxLayout="column" [formGroup]="loginForm" (ngSubmit)="signin()">
+          <div class="marginBottom-5">
+            <h1> Iniciar Sesi&oacute;n </h1>
+          </div>
+
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>email</mat-icon>
+              <mat-label> Dirección de correo electrónico * </mat-label>
+              <input matInput [formControl]="loginForm.controls['username']" value="">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.username">
+              <ng-container
+                *ngIf="loginForm.controls['username'].hasError(error.type) && (loginForm.controls['username'].dirty || loginForm.controls['username'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </div>
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy">
+              <mat-icon class="color-gray-light mr-1" matPrefix>lock</mat-icon>
+              <mat-label> Contraseña * </mat-label>
+              <input (input)="loginForm.controls['password'].markAsTouched()" [type]="showPass == false ? 'password'  : 'text' " matInput formControlName="password">
+              <mat-icon style="cursor: pointer;" class="color-gray-light" matTooltip="Mostrar / Ocultar contraseña" (click)="showPass = !showPass" matSuffix >{{ !showPass ? 'visibility' : 'visibility_off'}}</mat-icon>
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.password">
+              <ng-container
+                *ngIf="loginForm.controls['password'].hasError(error.type) && (loginForm.controls['password'].dirty || loginForm.controls['password'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+          </div>
+          <div class="pb-1 marginBottom-5">
+            <mat-form-field class="full-width" appearance="legacy"> 
+              <mat-icon class="color-gray-light mr-1" matPrefix>lock</mat-icon>
+              <mat-label> Confirmar Contraseña * </mat-label>
+              <input (input)="loginForm.controls['confirmPassword'].markAsTouched()" [type]="showPassConfirm == false ? 'password'  : 'text' " matInput formControlName="confirmPassword" [errorStateMatcher]="matcher">
+            </mat-form-field>
+            <div *ngFor="let error of errorMessages.password">
+              <ng-container
+                *ngIf="loginForm.controls['confirmPassword'].hasError(error.type) && (loginForm.controls['confirmPassword'].dirty || loginForm.controls['confirmPassword'].touched)">
+                <small class="form-error-msg">{{error.message}}</small>
+              </ng-container>
+            </div>
+            <mat-error *ngIf="loginForm.hasError('notSame')">
+              Las contraseñas no coinciden
+            </mat-error> 
+          </div>
+          <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="space-between center" fxFlex="100">
+            <mat-checkbox formControlName="rememberMe" class="pb-1">
+              Recordar mi contraseña
+            </mat-checkbox>
+            <small>
+              <a [routerLink]="['/sessions/forgot-password']" class="color-red">
+                Olvidé mi contraseña
+              </a>
+            </small>
+          </div>
+
+          <div fxLayout="column" fxLayoutAlign="center" fxFlex="100" style="margin-top: 20px;margin-bottom: 20px;">
+
+            <div fxFlex="100" fxLayoutAlign="center center">
+              <button type="button" class="btn-gradient-red" fxFlex="100" fxFlex.xs="100" mat-flat-button type="submit" [disabled]="loginForm.invalid">
+                Iniciar sesión
+              </button>
+            </div>
+          </div>
+
+          <div fxLayout="column" fxLayoutAlign="center center" fxFlex="100">
+            <small>
+              <a [routerLink]="['/sessions/signup']" class="color-red">
+                ¿No tienes una cuenta? Regístrate
+              </a>
+            </small>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

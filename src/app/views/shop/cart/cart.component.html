@@ -1,0 +1,327 @@
+<div fxLayout="column" class="w-100 hitec-bg">
+
+  <!-- Buttons -->
+  <div *ngIf="cart.length || combos.length" fxLayoutAlign="start center" class="w-100 mb-16">
+    <button class="btn-black border-square" fxLayoutAlign="center center" [class.btn-black-active]="showCartSection"  (click)="showCartSection = true;showComboSection = false">
+      <mat-icon>shopping_cart</mat-icon>
+      Carrito de Compras
+    </button>
+    <button class="btn-black border-square" fxLayoutAlign="center center" [class.btn-black-active]="showComboSection" (click)="showComboSection = true;showCartSection = false">
+      <mat-icon>all_inbox</mat-icon>
+      Combos Agregados</button>
+  </div>
+
+  <!-- Cart Section -->
+  <div *ngIf="showCartSection && cart.length" fxLayout="column" fxLayoutAlign="start start" class="w-100 h-100">
+    <div fxLayoutAlign="space-between center" class="w-100 mb-16" [ngStyle]="layoutConf.isMobile ? {'flex-direction':'column'} : {}">
+      <h1 fxFlex>Carrito de Compras</h1>
+      <div fxLayoutAlign="end center">
+        <div class="advert" fxLayoutAlign="center center" fxLayoutGap="5px">
+          <mat-icon>info</mat-icon>
+          <span class="text-muted" [ngStyle]="layoutConf.isMobile ? {} : {'line-height':'0'}">Tasa de Cambio Actual: {{dollar}} - Servicio de HiTec</span>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayoutAlign="start center" class="w-100">
+      <!--<span class="f-1-2rem">ID SC: 2356</span>-->
+    </div>
+
+    <div fxLayoutAlign="start center" fxLayoutGap="10px" [ngStyle]="layoutConf.isMobile ? {'flex-direction':'column'} : {}" [ngClass]="{'w-100':layoutConf.isMobile, 'w-100 hitec-menu':!layoutConf.isMobile}">
+      <!--
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" class="h-100 p-0-10 bg-white">
+        <span *ngIf="!layoutConf.isMobile">¿Deseas facturar?</span>
+        <mat-checkbox>La facturación se realizará en dólares</mat-checkbox>
+      </div>
+      -->
+      <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px" class="h-100 p-0-10 bg-white">
+        <mat-icon fxLayoutAlign="center center" class="material-icons-outlined header-icon" style="font-size:24px">pin_drop</mat-icon>
+        <span fxLayoutAlign="center center">Enviar a:&nbsp;<b>{{address}}</b></span>
+        <!--
+        <mat-form-field appearance="outline" fxLayoutAlign="center center" class="no-hint">
+          <mat-label class="form-label">Dirección</mat-label>
+          <mat-select [(ngModel)]="addressId" (selectionChange)="setUnitType($event.value)">
+            <mat-option *ngFor="let a of addresses" [value]="a.id">
+              {{a.address}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        -->
+      </div>
+      <div fxFlex></div>
+      <button class="btn-black" fxLayoutAlign="center center" (click)="emptyCart()"><mat-icon>delete</mat-icon>Vaciar carrito de compras</button>
+    </div>
+
+    <div fxFill fxLayout="column" fxLayoutGap="10px" class="product-list"  [@animate]="{value:'*',params:{delay: '100ms', x:'-50px'}}">
+      <div *ngFor="let item of cart" fxLayout="row" fxLayoutGap="10px" class="mat-elevation-z1 product-card-detail bg-white" 
+            [ngStyle]="layoutConf.isMobile ? {'flex-direction':'column', 'align-items':'center'} : {}">
+        <div fxLayoutAlign="center center" class="card-img-container" [routerLink]="['/shop/products', item.skuSap]">
+          <img *ngIf="item.skuSapNavigation.imageUrl" class="card-image" [src]="item.skuSapNavigation.imageUrl" style="cursor: pointer">
+          <mat-label *ngIf="!item.skuSapNavigation.imageUrl" class="card-no-image"><b>No hay imagen disponible</b></mat-label>
+        </div>
+        <div fxFlex fxLayout="column" fxLayoutAlign="center center">
+          <div fxFlex="60" fxFill [ngStyle]="layoutConf.isMobile ? {'flex-direction':'column', 'align-items':'center'} : {}">
+            <div fxFill fxFlex="25" fxLayout="column">
+              <span style="cursor: pointer" [routerLink]="['/shop/products', item.skuSap]"><b>{{item.skuSapNavigation.itemName}}</b></span>
+              <span class="itext-ired">{{(item.skuSapNavigation?.trademark?.trademark)?item.skuSapNavigation.trademark.trademark:"Marca"}}</span>
+              <span>SKU: <span class="itext-dark-gray">{{item.skuSap}}</span></span>
+              <br>
+              <span>Fecha estimada:</span>
+              <span class="itext-dark-gray">3 a 5 días</span>
+            </div>
+            <div fxFill fxFlex="30" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+              <span class="percent-chip p-0-5">{{(item.skuSapNavigation.discount)?item.skuSapNavigation.discount:0}}%</span>
+              <div fxLayoutAlign="space-between center" class="w-100">
+                <span [ngClass]="{'text-crossed':(item.skuSapNavigation.discount)?true:false}" class=" itext-muted-ired">{{numberWithCommas(item?.skuSapNavigation.salePrice)}} {{item.skuSapNavigation.saleCurrency}}</span>
+                <span class="text-muted">{{calculateTotalWithOutCommas(item?.skuSapNavigation.salePrice,1,item.skuSapNavigation.discount)}} {{item.skuSapNavigation.saleCurrency}}</span>
+              </div>
+              <mat-divider class="w-100 relative"></mat-divider>
+              <div fxLayoutAlign="space-between center" class="w-100">
+                <span [ngClass]="{'text-crossed':(item.skuSapNavigation.discount)?true:false}" class="itext-muted-ired">{{numberWithCommas(item?.skuSapNavigation.salePrice * dollar)}} MXN</span>
+                <span class="text-muted">{{numberWithCommas(calculateTotalWithOutCommas(item?.skuSapNavigation.salePrice,1,item.skuSapNavigation.discount) * dollar)}} MXN</span>
+              </div>
+            </div>
+            <div fxFill fxFlex="15" fxLayout="column" fxLayoutAlign="center center">
+              <input id="quantity" name="quantity" type="text" class="product-quantity" (click)="onQuantityChange(item)" [(ngModel)]="item.quantity" [readonly]="true">
+            </div>
+            <div fxFill fxFlex="30" fxLayout="column" fxLayoutAlign="center end" class="summary">
+              <span class="text-muted">Total</span>
+              <mat-divider class="w-100 relative"></mat-divider>
+              <span [ngClass]="{'text-crossed':(item.skuSapNavigation.discount)?true:false}" class="itext-muted-ired">{{numberWithCommas(numberWithCommas(item?.skuSapNavigation.salePrice) * item.quantity * dollar)}} MXN</span>
+              <mat-divider class="w-100 relative"></mat-divider>
+              <span class="text-muted">{{numberWithCommas(calculateTotalWithOutCommas(item?.skuSapNavigation.salePrice,1,item.skuSapNavigation.discount) * item.quantity * dollar)}} MXN</span>
+            </div>
+          </div>
+        </div>
+        <div fxFlex="20" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+          <button class="btn-gradient-red" style="width:145px" [routerLink]="['/shop/products', item.skuSap]">Editar Artículo</button>
+          <button class="btn-black" style="width:145px" routerLink="/shop/cart" (click)="removeProduct(item)">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <div fxLayout="column" fxLayoutAlign="center end" fxLayoutGap="10px" class="w-100 mb-16" [@animate]="{value:'*',params:{delay: '100ms', x:'50px'}}">
+      <span>Ingrese código de descuento</span>
+      <div fxLayout="row">
+        <input type="text" placeholder="Ingresa tu código" class="discount-code p-0-5" [(ngModel)]="discountCodeKey" (keyup.enter)="validateDiscount()">
+        <button class="btn-gradient-red" style="width:100px;" (click)="validateDiscount();">Validar</button>
+      </div>
+      <span class="itext-red">* Los descuentos aplicados no son acumulables</span>
+    </div>
+
+    <div class="w-100" fxLayoutAlign="end center">
+      <div class="advert" fxLayoutAlign="center center" fxLayoutGap="5px">
+        <mat-icon>info</mat-icon>
+        <span class="text-muted" style="line-height:0">Envío - Productos SECO = $10 USD</span>
+      </div>
+    </div>
+
+    <h1>Resumen del pedido</h1>
+
+    <mat-divider *ngIf="cart.length" class="w-100"></mat-divider>
+
+    <div fxLayout="row" fxLayout.lt-md="column" class="w-100"  [@animate]="{value:'*',params:{delay: '100ms', x:'50px'}}">
+      <mat-card class="m-0" fxFlex="100" fxLayoutAlign="end center" class="summary" [ngStyle]="layoutConf.isMobile ? {'justify-content':'center'} : {}">
+        <div [attr.fxFlex]="layoutConf.isMobile ? 100 : 50">
+          <div fxLayoutAlign="center center" class="w-100 mb-16">
+            <span fxFlex="33" class="fw-500">Producto:</span>
+            <span fxFlex="33" class="text-muted">{{numberWithCommas(subTotal)}} USD</span>
+            <span fxFlex="33" class="text-muted">{{numberWithCommas(subTotal*dollar)}} MXN</span>
+          </div>
+          <div fxLayoutAlign="center center" class="w-100 mb-16">
+            <span fxFlex="33" class="fw-500">Envío:</span>
+            <span fxFlex="33" class="text-muted">{{numberWithCommas(envio)}} USD</span>
+            <span fxFlex="33" class="text-muted">{{numberWithCommas(envio*dollar)}} MXN</span>
+          </div>
+          <div fxLayoutAlign="center center" class="w-100 mb-16">
+            <span fxFlex="33" class="fw-500">IVA ({{minIVA}}/{{maxIVA}}%):</span>
+            <span fxFlex="33" class="text-muted">{{IVA}}%</span>
+            <span fxFlex="33" class="text-muted">{{IVA}}%</span>
+          </div>
+          <mat-divider class="relative"></mat-divider>
+          <div class="w-100 mb-16 pt-16">
+            <span fxFlex="33" class="fw-500">Total a pagar:</span>
+            <span fxFlex="33" class="itext-muted-red f-1-2rem"><b>{{numberWithCommas(total)}} USD</b></span>
+            <span fxFlex="33" class="itext-red f-1-2rem"><b>{{numberWithCommas(total*dollar)}} MXN</b></span>
+          </div>
+          <mat-card-actions>
+            <span fxFlex></span>
+            <button class="btn-gradient-red" style="width: 180px;" (click)="payOrder();">Comprar</button>
+            <!--
+            <button class="btn-gradient-red" routerLink="/shop/checkout" style="width:180px">
+              <mat-icon>chevron_right</mat-icon>
+              Confirmar pedido
+            </button>
+            -->
+          </mat-card-actions>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <!-- Cart Empty Message -->
+  <div *ngIf="showCartSection && !cart.length && userInfo" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+    <mat-card class="text-center">
+      <p>Tu carrito está vacío</p>
+      <button class="btn-black" style="width:180px" routerLink="/shop">Volver a la tienda</button>
+    </mat-card>
+  </div>
+  
+  <!-- Combos section -->
+  <div *ngIf="showComboSection && combos.length" fxLayout="column" fxLayoutAlign="start start" class="w-100 h-100">
+    <h1>Combos Agregados</h1>
+  
+    <mat-accordion fxFlex="100" class="w-100">
+      <mat-expansion-panel *ngFor="let combo of combos; let i = index;">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+                Combo: {{combo?.comboName}}
+            </mat-panel-title>
+            <mat-panel-description>
+              
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+  
+          <div *ngFor="let order of combo?.orders; let i = index;">
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="center center" fxLayoutAlign.xs="center" style="margin: 0px;">
+                  <div fxFlex="250px" fxFlex.xs="100" fxLayoutAlign="center center" [ngStyle.gt-md]="{'margin-right': '15px'}" style="height: 200px; width: auto;">
+                      <img class="card-image-combo" [src]="order?.skuSapNavigation?.imageUrl" (error)="onImgError($event, order?.skuSapNavigation.trademarkId)" alt="" height="100%">
+                  </div>
+                  <div fxFlex="15" fxLayout="column" fxLayoutAlign="start" fxLayoutAlign.xs="center center">
+                      <div fxLayout="column" fxLayout.xs="row">
+                          <b fxHide.xs>SKU:</b>
+                          <p>{{order?.skuSapNavigation?.skuSap}}</p>
+                      </div>
+                      <div fxLayout="column" fxLayout.xs="row">
+                          <b fxHide.xs>Producto:</b>
+                          <p>{{order?.skuSapNavigation?.itemName}}</p>
+                      </div>
+                      <div fxLayout="column" fxLayout.xs="row">
+                          <b>Fecha estimada de entrega:</b>
+                          <p>{{ businessRules(order?.skuSapNavigation?.stock, order?.skuSapNavigation?.stockUs, order?.skuSapNavigation?.stockEr, order?.skuSapNavigation?.stockAs, order?.skuSapNavigation?.trademarkId)   }}</p>
+                      </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="center center" style="margin: 25px;" fxHide fxShow.xs>
+                      <b>Precio:</b>
+                  </div>
+                  <div fxFlex="45" fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="center center" style="margin: 20px;">
+                      <div *ngIf="order.skuSapNavigation?.discount" fxLayout="row" fxFlex class="w-100">
+                          <div fxFlex fxLayout="column" *ngIf="order.skuSapNavigation?.discount">
+                              <p fxFlex style="color: #dd2c34; text-decoration: line-through;">{{numberWithCommas(order?.skuSapNavigation.salePrice)}} USD</p>
+                              <p fxFlex style="color: #dd2c34;">{{calculateTotalWithOutCommas(order?.skuSapNavigation.salePrice,1,order.skuSapNavigation.discount)}} USD</p>
+                          </div>
+                          <div fxFlex fxLayout="column" *ngIf="order.skuSapNavigation?.discount">
+                              <p fxFlex style="color: #dd2c34; text-decoration: line-through;">{{getPriceCurrentCurrency(order?.skuSapNavigation.salePrice)}} MXN</p>
+                              <p fxFlex style="color: #dd2c34;">{{ order.skuSapNavigation.discount }} % Descuento</p>    
+                              <p fxFlex style="color: #dd2c34;">{{getPriceCurrentCurrency(calculateTotalWithOutCommas(order?.skuSapNavigation.salePrice,1,order.skuSapNavigation.discount))}} MXN</p>
+                          </div>
+                      </div>
+                      <div *ngIf="!order.skuSapNavigation?.discount" fxLayout="row" fxFlex>
+                          <p fxFlex style="color: #dd2c34;">{{numberWithCommas(order?.skuSapNavigation.salePrice)}} USD</p>
+                          <p fxFlex style="color: #dd2c34;">{{getPriceCurrentCurrency(order?.skuSapNavigation.salePrice)}} MXN</p>
+                      </div>
+                      <div fxFlex>
+                          <div fxLayout="row" fxLayoutAlign="center center">
+                              <!-- <button mat-button (click)="minusQuantity(order?.quantity, i)">-</button> -->
+                              <input style="text-align: center;" disabled="true" class="quantityInput" [value]="order?.quantity">
+                              <!-- <button mat-button (click)="addQuantity(order?.quantity, i)" >+</button> -->
+                          </div>
+                      </div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxHide fxShow.xs>
+                      <b>Subtotal:</b>
+                  </div>
+                  <div fxFlex="22" fxLayout="row" fxLayoutAlign="center center" style="margin: 20px;">
+                      <p fxFlex class="centered" style="color: #dd2c34;"> {{ calculateTotal(order.skuSapNavigation?.salePrice,order?.quantity,order?.skuSapNavigation?.discount) }} USD</p>
+                      <p fxFlex class="centered" style="color: #dd2c34;"> {{ getPriceCurrentCurrency(calculateTotalWithOutCommas(order?.skuSapNavigation?.salePrice,order?.quantity,order?.skuSapNavigation?.discount))}} MXN</p>
+                  </div>
+                  
+              </div>
+              <hr>
+          </div>
+          
+          <div *ngIf="combo?.orders?.length" fxLayout="row" fxLayoutAlign="start center" style="margin: 30px;">
+              <p fxFlex style="font-weight: 300; font-size: 1rem;">Resumen del pedido:</p>
+          </div>
+  
+          <div *ngIf="combo?.orders?.length" fxLayout="row" fxLayout.lt-lg="column" style="margin: 0px 20px 0px 20px;">
+              
+              <div fxFlex="70" fxFlex.xs="100" fxLayout.lt-lg="column">
+                  <div *ngIf="totalCombos[i]?.showDiv" fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start center" fxLayoutAlign.lt-lg="center start">
+                      <p fxFlex="33" class="font-style"><b>Productos</b></p>
+                      <div fxLayout="row" fxLayoutAlign="space-between center" [ngStyle]="{'width':'50%'}" [ngStyle.lt-lg]="{'width':'100%'}">
+                        <p class="font-style" style="text-align: right;">{{numberWithCommas(totalCombos[i]?.subTotal)}} USD</p>
+                        <p class="font-style" style="text-align: right;">{{getPriceCurrentCurrency(totalCombos[i]?.subTotal)}} MXN</p>
+                      </div>
+                  </div>
+                  <div *ngIf="verifyOrderSECO() == true && totalCombos[i]?.showDiv" fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start center" fxLayoutAlign.lt-lg="center start">
+                      <p fxFlex="33" class="font-style" ><b>Envío: </b></p>
+                      <div fxLayout="row" fxLayoutAlign="space-between center" [ngStyle]="{'width':'50%'}" [ngStyle.lt-lg]="{'width':'100%'}">
+                        <p class="font-style" style=" text-align: right;">{{numberWithCommas(totalCombos[i]?.envio)}} USD</p>
+                        <p class="font-style" style=" text-align: right;">{{getPriceCurrentCurrency(totalCombos[i]?.envio)}} MXN</p>
+                      </div>
+                  </div>
+                  <!--IVA-->
+                  <div *ngIf="totalCombos[i]?.showDiv" fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start center" fxLayoutAlign.lt-lg="center start">
+                      <p fxFlex="33" class="font-style" ><b>IVA {{iva == 0.16 ? '(16%)' : '(8%)' }}</b></p>
+                      <div fxLayout="row" fxLayoutAlign="space-between center" [ngStyle]="{'width':'50%'}" [ngStyle.lt-lg]="{'width':'100%'}">
+                        <p class="font-style" style=" text-align: right;">{{ totalCombos[i]?.ivaString | number:'1.1-2' }} USD</p>
+                        <p class="font-style" style=" text-align: right;">{{ getPriceCurrentCurrency(totalCombos[i]?.ivaString)}} MXN</p>
+                      </div>
+                  </div>
+                  <div *ngIf="totalCombos[i]?.showDiv" fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start center" fxLayoutAlign.lt-lg="center start">
+                      <p fxFlex="33" class="font-style" ><b>Total a pagar:</b></p>
+                      <div fxLayout="row" fxLayoutAlign="space-between center" [ngStyle]="{'width':'50%'}" [ngStyle.lt-lg]="{'width':'100%'}">
+                        <p  class="font-style" style=" font-size: 1.5rem; color: #dd2c34; text-align: right;">{{ totalCombos[i]?.total | number:'1.1-2' }} USD</p>
+                        <p  class="font-style" style=" font-size: 1.5rem; color: #dd2c34; text-align: right;">{{ getPriceCurrentCurrency(totalCombos[i]?.total)}} MXN</p>
+                      </div>
+                  </div>
+              </div>
+              <div fxFlex="90" fxLayoutAlign="space-around center" fxLayoutAlign.lt-lg="center center">
+  
+                  <!-- Para crear pago en el banco - PRD -->
+                  <button fxFlex="40" fxFlex.xs="95" class="btn-gradient-red" (click)="payOrderByCombo(totalCombos[i]);">Comprar</button>
+  
+                  <button fxFlex="40" fxFlex.xs="95" class="btn-black" (click)="deleteCombo(totalCombos[i]?.shoppingCarID);">Borrar combo</button>
+          
+                  <!-- Para saltarse el pago del banco - QA -->
+                  <!-- <button style="width: 50%; float: right;" class="btn-gradient-red" (click)="createOrderCombo(totalCombos[i]);">Comprar</button> -->
+              </div>
+          </div>
+
+        <div *ngIf="!combo?.orders?.length" fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start center" style="margin: 30px;">
+          <p fxFlex style="font-weight: 300; font-size: 1rem;">Este combo no cuenta con productos</p>
+          <button fxFlex="40" fxFlex.xs="95" class="btn-black" (click)="deleteCombo(combos[i]?.id);">Borrar combo</button>
+        </div>
+  
+        </mat-expansion-panel>
+    </mat-accordion>
+
+  </div>
+
+  <!-- Combo Empty Message -->
+  <div *ngIf="showComboSection && !combos.length" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+    <mat-card class="text-center">
+      <p>No tienes combos</p>
+      <button class="btn-black" style="width:180px" routerLink="/shop">Volver a la tienda</button>
+    </mat-card>
+  </div>
+
+  <!-- Cart and Combo Empty Message 
+  <!--
+  <div *ngIf="!cart.length && !combos.length" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+    <mat-card class="text-center">
+      <p>Tu carrito está vacío</p>
+      <button class="btn-black" style="width:180px" routerLink="/shop">Volver a la tienda</button>
+    </mat-card>
+  </div>-->
+
+
+  <!-- No Session -->
+  <div *ngIf="!userInfo" [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+    <mat-card class="text-center">
+      <p>Inicia Sesión para acceder a tu carrito de compras</p>
+      <button class="btn-black" style="width:180px" routerLink="/sessions/signin">Inicia sesión</button>
+    </mat-card>
+  </div>
+</div>

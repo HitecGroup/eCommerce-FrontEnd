@@ -1,0 +1,12 @@
+.toggle-btn{
+    background-color: white;
+    border:0px;
+    border-radius: 4px;
+    width: 40px;
+    height: 40px;
+    padding: 0px;
+}
+
+:host ::ng-deep .mat-card-image {
+    width: auto;
+}

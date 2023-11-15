@@ -1,0 +1,107 @@
+<div  fxLayout="column" class="hitec-bg">
+    <div *ngIf="cart.length" fxLayout="column">
+        <h1 fxFlex>Mis Pedidos</h1>
+        <mat-divider class="w-100"></mat-divider>
+        <div fxLayout="column" fxLayoutGap="10px" class="margin-333 w-100">
+            <div *ngFor="let item of cart" style="border-radius:5px;background:white">
+                <div fxLayout="column" fxLayoutGap="10px" class="product-list" style="margin-top:0;margin-bottom:0;" [@animate]="{value:'*',params:{delay: '100ms', x:'-50px'}}">
+                    <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="space-between center" class="header-bg">
+                        <div fxFlex="calc(33.3%)" fxFlex.lt-lg="100" fxLayoutAlign="space-between center" [ngClass.lt-lg]="{'w-100':true,'mb-8':true}">
+                            <div fxFlex="50" fxLayout="column" fxLayoutAlign="center start">
+                                <span>N° de pedido</span>
+                                <span class="text-muted">{{item?.shoppingcarNumberSap?item.shoppingcarNumberSap:"-"}}</span>
+                            </div>
+                            <div fxFlex="50" fxLayout="column" fxLayoutAlign="center start">
+                                <span>Pedido realizado</span>
+                                <!-- <span class="text-muted">5:03 am 21/05/2021</span> -->
+                                <span class="text-muted">{{getOrderDate(item.modifiedAt)}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="calc(33.3%)" fxFlex.lt-lg="100" fxLayoutAlign="space-between center" [ngClass.lt-lg]="{'w-100':true,'mb-8':true}">
+                            <div fxFlex="50" fxLayout="column" fxLayoutAlign="center start">
+                                <span>Total en MXN</span>
+                                <span class="text-muted">{{item?.netTotalMxn ? item?.netTotalMxn : -1|currency}}</span>
+                            </div>
+                            <div fxFlex="50" fxLayout="column" fxLayoutAlign="center start">
+                                <span>Total en USD</span>
+                                <span class="text-muted">{{item?.netTotalUsd ? item?.netTotalUsd : -1|currency}}</span>
+                            </div>
+                        </div>
+                        <div fxFlex="calc(33.3%)" fxFlex.lt-lg="100" fxLayoutAlign="space-between center" [ngClass.lt-lg]="{'w-100':true,'mb-8':true}">
+                            <div fxFlex="50" fxLayout="row" fxLayoutAlign="center start" class="pointer">
+                                <a fxFill fxLayoutAlign="center start" *ngIf="item?.billUrl" href="{{item.billUrl}}">
+                                    <mat-icon class="color-download">download</mat-icon>
+                                    <span class="text-muted color-download">Descargar factura</span>
+                                </a>
+                                <span *ngIf="!item?.billUrl">La factura aún no se ha generado</span>
+                            </div>
+                            <div fxFlex="50" fxLayout="column" fxLayoutAlign="center start" class="bg-white p-5" style="border-radius:5px">
+                                <div fxLayout="row" fxLayoutAlign="center center">
+                                    <mat-icon>pin_drop</mat-icon>
+                                    <span>Enviar a:</span>
+                                </div>
+                                <span class="text-muted">{{address}}</span>
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div *ngFor="let order of item.orders;" fxLayout="row" fxLayout.lt-lg="column" fxLayoutGap="10px" fxLayoutAlign="center center"class="mat-elevation-z1 product-card-detail bg-white">
+                        <div fxLayoutAlign="center center" class="card-img-container" [routerLink]="['/shop/products', item.skuSap]">
+                            <img *ngIf="order.skuSapNavigation.imageUrl" class="card-image" [src]="order.skuSapNavigation.imageUrl" style="cursor: pointer">
+                            <mat-label *ngIf="!order.skuSapNavigation.imageUrl" class="category-no-image"><b>No hay imagen disponible</b></mat-label>
+                        </div>
+                        <div fxFlex fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                            <div fxFill fxFlex="25" fxFlex.lt-lg="50" fxLayout="column">
+                                <span style="cursor: pointer" [routerLink]="['/shop/products', order.skuSap]"><b>{{order.skuSapNavigation.itemName}}</b></span>
+                                <span class="itext-ired">{{(order.skuSapNavigation.trademark)?order.skuSapNavigation.trademark:"-"}}</span>
+                                <span>SKU: <span class="itext-dark-gray">{{order?.skuSap ? order?.skuSap : '-'}}</span></span>
+                                <span>Estatus: </span>
+                                <span class="text-muted">{{getState(order?.orderStateId)}}</span>
+                                <span>Cantidad:</span>
+                                <span class="text-muted">{{order?.quantity ? order?.quantity : -1}}</span>
+                            </div>
+                            <div fxFill fxFlex="40" fxFlex.lt-lg="50" fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+                                <span>Fecha estimada de entrega: </span>
+                                <span class="text-muted">
+                                    {{businessRules(order.timeEstimated, order.guideNumber, order.skuSapNavigation.stock, order.skuSapNavigation.stockUs, order.skuSapNavigation.stockEr, order.skuSapNavigation.stockAs, order.skuSapNavigation.trademarkId)}}
+                                </span>
+                                <span>Comentario: </span>
+                                <span class="text-muted">{{order?.comment || '--'}}</span>
+                                <span [matTooltip]="getLogisticCompany(order?.logisticCompanyId)">
+                                    No. de guía: 
+                                    <span class="text-muted">
+                                        <a *ngIf="order?.guideNumber" [href]="getLinkLogisticCompany(order?.logisticCompanyId,order?.guideNumber)" target="_blank">
+                                            {{order?.guideNumber}}
+                                        </a>
+                                        <span *ngIf="!order?.guideNumber">
+                                            {{order?.guideNumber || '--'}}
+                                        </span>
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        <div fxFlex="20" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+                            <button class="btn-black" style="width:145px" (click)="goToOdrerDetails(order)" matTooltip="REALIZAR SEGUIMIENTO DEL PAQUETE">Realizar seguimiento</button>
+                            <button class="btn-gradient-red" style="width:145px" [routerLink]="['/shop/products', item.skuSap]">Comprar de nuevo</button>
+                        </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="userInfo && !cart.length"  [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+        <mat-card class="text-center">
+            <p>No tienes pedidos</p>
+            <button class="btn-black" style="width:180px" routerLink="/shop">Volver a la tienda</button>
+        </mat-card>
+    </div>
+    
+    <div *ngIf="!userInfo"  [@animate]="{value:'*',params:{delay: '100ms', y:'-50px'}}">
+        <mat-card class="text-center">
+            <p>Inicia sesión para ver tus pedidos</p>
+            <button class="btn-black" style="width:180px" routerLink="/sessions/signin">Inicia sesión</button>
+        </mat-card>
+    </div>
+</div>

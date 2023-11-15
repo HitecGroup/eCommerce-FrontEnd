@@ -1,0 +1,16 @@
+.mat-dialog-content {
+  min-height: 122px;
+}
+
+.mat-dialog-content {
+  min-height: 122px;
+}
+:host ::ng-deep .mat-progress-spinner circle, .mat-spinner circle {   
+  stroke: var(--color-red) !important;
+}
+mat-label{
+  color: var(--color-red);
+}
+small{
+  color: var(--color-red);
+}

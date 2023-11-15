@@ -1,0 +1,183 @@
+<mat-sidenav-container style="height:80vh">
+  <mat-sidenav EgretSideNavToggle class="shop-sidebar default-light-bg">
+    <div class="shop-filters-wrap">
+      <form [formGroup]="filterForm">
+        <mat-accordion multi="true" displayMode="flat">
+          <mat-stepper orientation="vertical">
+            <mat-step *ngFor="let ms of menuSelected;">
+              <ng-template matStepLabel><mat-label (click)="setLevel(ms)">{{ms.title}}</mat-label></ng-template>
+            </mat-step>
+          </mat-stepper>
+          
+          <!-- Categories -->
+          <mat-expansion-panel expanded="true">
+            <mat-expansion-panel-header class="trademarkFilter">
+              <mat-panel-title style="color: var(--color-white);">
+                Categorías
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <ul class="product-categories">
+              <li *ngFor="let c of resultMenu" [ngClass]="{'list-item-active': c.title === activeCategory}" (click)="setActiveCategory(c)">
+                <span *ngIf="filterType >= 1 && filterType <= 4">{{c.title}}</span>
+                <span *ngIf="filterType > 5">{{c.skuSap}}</span>
+              </li>
+            </ul>
+          </mat-expansion-panel>
+
+        </mat-accordion>
+      </form>
+    </div>
+  </mat-sidenav>
+  <!---categories-->
+  <div class="category-lc">
+    <div *ngIf="categories.length > 0 && (filterType == 2 || filterType == 3 || filterType == 4)" class="category-container">
+      <div 
+        *ngFor="let c of categories"
+        (click)="setCurrentFiltersCategory(c)"
+        class="category">
+        <img *ngIf="c.imageUrl != ''" class="card-image" [src]="c.imageUrl">
+        <mat-label *ngIf="!c.imageUrl" class="card-no-image">No hay imagen disponible</mat-label>
+        <div class="category-label">{{c.title}}</div>
+      </div>
+    </div>
+
+    <div fxLayout="row wrap" fxLayoutAlign="center center" class="cards-container"
+      *ngIf="categories.length > 0 && (filterType == 1 || filterType == 3 || filterType == 4)" >
+      <div *ngFor="let c of categories" 
+        (click)="setCurrentFiltersCategory(c)"
+        class="category-card-container">
+        <mat-card class="category-card">
+          <div class="card-img-container" fxLayoutAlign="center center">
+            <img mat-card-image *ngIf="c.imageUrl" class="card-image" [src]="c.imageUrl" alt="No hay imagen disponible">
+            <mat-label *ngIf="!c.imageUrl" class="card-no-image"><b>No hay imagen disponible</b></mat-label>
+          </div>
+        </mat-card>
+        <div class="w-100" fxLayoutAlign="center center" class="category-card-chip">
+          <span fxLayoutAlign="center center" class="white-chip">
+            <span class="category-label">{{c.title}}</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <!--/-->
+    <!---trademarks-->
+    <div *ngIf="categories.length > 0 && filterType == 1" class="trademark-lc-1">
+      <div class="trademark-lc-2">
+        <div 
+          *ngFor="let t of categories"
+          (click)="setCurrentFiltersCategory(t)"
+          class="trademark-l">
+          <img [src]="t.imageUrl">
+        </div>
+      </div>
+    </div>
+    <!--/-->
+    <!--products-->
+    <div 
+      *ngIf="categories.length > 0 && filterType == 5" 
+      fxFlex="90"
+      fxLayout="column"
+      fxLayoutGap="2%">
+      <div 
+        fxFlex="100"
+        fxLayout="row"
+        fxLayoutAlign="center center"
+        fxLayoutGap="1%"
+        class="product-l"
+        *ngFor="let p of categories | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage, totalItems: rowsNumber }; let i = index;"
+        [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+        >
+        <!--imagen del producto-->
+        <div class="product-l-img" fxFlex="20" fxLayout="column" fxLayoutAlign="center center">
+          <img [src]="p.imageUrl">
+        </div>
+        <!--detalles del producto-->
+        <div fxFlex="30" fxLayout="column" fxLayoutAlign="start center">
+          <div fxFlex="100"><b>{{p.id}}</b></div>
+          <div fxFlex="100">{{p.skuSap}}</div>
+          <div fxFlex="100"><span class="color-red"><b>{{p.trademark}}</b></span></div>
+          <div fxFlex="100">{{p.price}} {{p.currency}}</div>
+        </div>
+        <!--propiedades del producto-->
+        <div fxFlex="50" fxLayout="column" fxLayoutAlign="center center">
+          <div fxFlex="100" fxLayout="row" style="margin-top: 10px;">
+            <div fxFlex="33" fxLayout="column" fxLayoutAlign="center center">
+              <div fxFlex="100" fxLayoutAlign="center center">
+                <mat-label>Propiedad 1</mat-label>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="center center" class="property-value">
+                <mat-label>Valor 1</mat-label>
+              </div>
+            </div>
+            <div fxFlex="33" fxLayout="column" fxLayoutAlign="center center">
+              <div fxFlex="100" fxLayoutAlign="center center">
+                <mat-label>Propiedad 1</mat-label>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="center center" class="property-value">
+                <mat-label>Valor 1</mat-label>
+              </div>
+            </div>
+            <div fxFlex="33" fxLayout="column" fxLayoutAlign="center center">
+              <div fxFlex="100" fxLayoutAlign="center center">
+                <mat-label>Propiedad 1</mat-label>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="center center" class="property-value">
+                <mat-label>Valor 1</mat-label>
+              </div>
+            </div>
+          </div>
+          <div fxFlex="100" fxLayout="row" style="margin-top: 10px;">
+            <div fxFlex="33" fxLayout="column" fxLayoutAlign="center center">
+              <div fxFlex="100" fxLayoutAlign="center center">
+                <mat-label>Propiedad 1</mat-label>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="center center" class="property-value">
+                <mat-label>Valor 1</mat-label>
+              </div>
+            </div>
+            <div fxFlex="33" fxLayout="column" fxLayoutAlign="center center">
+              <div fxFlex="100" fxLayoutAlign="center center">
+                <mat-label>Propiedad 1</mat-label>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="center center" class="property-value">
+                <mat-label>Valor 1</mat-label>
+              </div>
+            </div>
+            <div fxFlex="33" fxLayout="column" fxLayoutAlign="center center">
+              <div fxFlex="100" fxLayoutAlign="center center">
+                <mat-label>Propiedad 1</mat-label>
+              </div>
+              <div fxFlex="100" fxLayoutAlign="center center" class="property-value">
+                <mat-label>Valor 1</mat-label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--pagination-->
+      <div class="products-pagination">
+        <pagination-controls (pageChange)="changePage($event)" previousLabel="Anterior" nextLabel="Siguiente"></pagination-controls>
+      </div>
+    </div>
+    <!---no-content-->
+    <div 
+      *ngIf="categories.length <= 0"
+      fxFlex="100"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+      style="height:75vh;width:auto;">
+      <h1 *ngIf="(filterType == 1)">No hay marcas para mostrar</h1>
+      <h1 *ngIf="(filterType == 2)">No hay categorías para mostrar</h1>
+      <h1 *ngIf="(filterType == 3)">No hay Subcategorías N1 para mostrar</h1>
+      <h1 *ngIf="(filterType == 4)">No hay Subcategorías N2 para mostrar</h1>
+      <h1 *ngIf="(filterType == 5)">No hay productos para mostrar</h1>
+      <button 
+        class="btn-gradient-red mt-3" 
+        mat-flat-button
+        [routerLink]="[redirect]"
+        >Regresar a la página de inicio</button>
+    </div>
+    <!--/-->
+  </div>
+  <!---categories-->
+</mat-sidenav-container>

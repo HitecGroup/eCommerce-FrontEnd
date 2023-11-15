@@ -1,0 +1,85 @@
+<div class="app-admin-wrap" [dir]='layoutConf?.dir'>
+  <!-- Header for top navigation layout -->
+  <!-- ONLY REQUIRED FOR **TOP** NAVIGATION LAYOUT -->
+  <app-header-top 
+    *ngIf="layoutConf.navigationPos === 'top'" 
+    [notificPanel]="notificationPanel" 
+    [ngStyle]="layoutConf.isMobile ? {'height':'80px;','max-height':'80px;'} : {'height':'160px;','max-height':'160px;'}">
+  </app-header-top>
+  <!-- Main Container -->
+  <mat-sidenav-container 
+  [dir]='layoutConf.dir'
+  class="app-admin-container app-side-nav-container mat-drawer-transition sidebar-{{layoutConf?.sidebarColor}} topbar-{{layoutConf?.topbarColor}} footer-{{layoutConf?.footerColor}}"
+  [ngClass]="adminContainerClasses">
+    <mat-sidenav-content style="overflow:hidden">
+    <!-- SIDEBAR -->
+    <!-- ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT -->
+    <app-sidebar-side 
+    *ngIf="layoutConf.navigationPos === 'side'" 
+    (mouseenter)="sidebarMouseenter($event)"
+    (mouseleave)="sidebarMouseleave($event)"
+    ></app-sidebar-side>
+    
+    <!-- Top navigation layout (navigation for mobile screen) -->
+    <!-- ONLY REQUIRED FOR **TOP** NAVIGATION MOBILE LAYOUT -->
+    <app-sidebar-top *ngIf="layoutConf.navigationPos === 'top' && layoutConf.isMobile"></app-sidebar-top>
+
+    <!-- App content -->
+    <div class="main-content-wrap" id="main-content-wrap" 
+    
+    >
+      <!-- Header for side navigation layout -->
+      <!-- ONLY REQUIRED FOR **SIDE** NAVIGATION LAYOUT -->
+      <app-header-side 
+        *ngIf="layoutConf.navigationPos === 'side'"
+        [notificPanel]="notificationPanel">
+      </app-header-side>
+
+      <div 
+        class="rightside-content-hold" id="rightside-content-hold" 
+        
+        >
+        <!-- [ngStyle]="layoutConf.isMobile ? {'height':'100vh'} : {'height':'calc(100vh - 65px);'}"> -->
+        <!-- View Loader -->
+        <div class="view-loader" *ngIf="isModuleLoading" style="position:fixed;"
+        fxLayout="column" fxLayoutAlign="center center">
+          <div class="spinner">
+            <div class="double-bounce1 mat-bg-accent"></div>
+            <div class="double-bounce2 mat-bg-primary"></div>
+          </div>
+        </div>
+        <!-- Breadcrumb -->
+        <!--<app-breadcrumb></app-breadcrumb>-->
+        <!-- View outlet -->
+        <!-- <div class="container-dynamic" [ngStyle]="layoutConf.isMobile ? {'margin-top':'0px'} : {'margin-top':'160px;'}"> -->
+        <div class="container-dynamic body-content">
+          <router-outlet></router-outlet>
+        </div>
+        <!-- <span class="m-auto" *ngIf="!layoutConf.footerFixed"></span> -->
+      </div>
+      <app-footer *ngIf="!layoutConf.footerFixed" style="position: fixed; bottom: 0px; width: 100%; z-index:999; height:70px;"></app-footer>
+      <!-- <span class="m-auto" *ngIf="layoutConf.footerFixed"></span> -->
+      <app-footer *ngIf="layoutConf.footerFixed"></app-footer>
+    </div>
+    <!-- View overlay for mobile navigation -->
+    <div class="sidebar-backdrop"
+    [ngClass]="{'visible': layoutConf.sidebarStyle !== 'closed' && layoutConf.isMobile}"
+    (click)="closeSidebar()"></div>
+  </mat-sidenav-content>
+
+
+    <!-- Notificaation bar -->
+    <mat-sidenav #notificationPanel mode="over" class="" position="end">
+      <div class="nofication-panel" fxLayout="column">
+        <app-notifications [notificPanel]="notificationPanel"></app-notifications>
+      </div>
+    </mat-sidenav>
+    
+    <egret-notifications2></egret-notifications2>
+  </mat-sidenav-container>
+</div>
+
+
+<!-- Only for demo purpose -->
+<!-- Remove this from your production version -->
+<!--<app-customizer></app-customizer>-->
